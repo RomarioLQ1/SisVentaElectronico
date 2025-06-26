@@ -7,6 +7,7 @@ package Vista;
 import DAO.UsuarioDAO;
 import Modelo.Usuario;
 import javax.swing.JOptionPane;
+import Vista.MenuPrincipal;
 
 
 /**
@@ -31,10 +32,12 @@ public class Login extends javax.swing.JFrame {
 
     if (user != null) {
         JOptionPane.showMessageDialog(this, "¡Bienvenido " + user.getNombreUsuario() + "!");
-        // Aquí puedes abrir otra ventana o menú principal
-        // Ejemplo:
-        // new MenuPrincipal().setVisible(true);
-        // this.dispose(); // Cierra la ventana de login
+        // Abrir el menú principal
+        MenuPrincipal menu = new MenuPrincipal();
+        menu.setVisible(true);
+
+        // Cerrar ventana de login
+        this.dispose();
     } else {
         JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
     }
@@ -158,28 +161,7 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-                String usuario = txtUsuario.getText();
-
-                String contrasena = new String(txtContrasena.getPassword()); // Si usas JPasswordField
-
-                UsuarioDAO dao = new UsuarioDAO();
-                 Usuario user = dao.verificarUsuario(usuario, contrasena);
-
-        if (user != null) {
-            JOptionPane.showMessageDialog(this, "Bienvenido, " + user.getNombreUsuario());
-
-            // Aquí puedes abrir la ventana principal del sistema
-            // Ejemplo:
-               //   Principal ventana = new Principal(); 
-                //  ventana.setVisible(true);
-                
-                
-            this.dispose(); // Cierra la ventana de login
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
-        }
-
+        validarLogin();
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
