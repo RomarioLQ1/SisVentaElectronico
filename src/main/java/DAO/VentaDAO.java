@@ -4,10 +4,11 @@
  */
 package DAO;
 
-/**
- *
- * @author david
- */
-public class VentaDAO {
-    
+import Modelo.Venta;
+import java.util.List;
+
+public interface VentaDAO {
+    boolean insertar(Venta venta);
+    Venta buscarPorId(int id);
+    List<Venta> obtenerTodas();
 }

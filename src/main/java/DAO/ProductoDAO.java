@@ -4,12 +4,13 @@
  */
 package DAO;
 
-/**
- *
- * @author david
- */
-public class ProductoDAO {
-    
-   
-    
+import Modelo.Producto;
+import java.util.List;
+
+public interface ProductoDAO {
+    boolean insertar(Producto p);
+    Producto buscarPorId(int id);
+    List<Producto> obtenerTodos();
+    boolean actualizar(Producto p);
+    boolean eliminar(int id);
 }

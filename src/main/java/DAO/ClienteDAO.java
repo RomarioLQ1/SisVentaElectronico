@@ -4,10 +4,13 @@
  */
 package DAO;
 
-/**
- *
- * @author david
- */
-public class ClienteDAO {
-    
+import Modelo.Cliente;
+import java.util.List;
+
+public interface ClienteDAO {
+    boolean insertar(Cliente cliente);
+    Cliente buscarPorId(int id);
+    List<Cliente> obtenerTodos();
+    boolean actualizar(Cliente cliente);
+    boolean eliminar(int id);
 }

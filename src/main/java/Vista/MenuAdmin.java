@@ -4,6 +4,9 @@
  */
 package Vista;
 
+
+import Vista.ClientesForm;
+
 /**
  *
  * @author david
@@ -15,7 +18,8 @@ public class MenuAdmin extends javax.swing.JFrame {
      */
     public MenuAdmin() {
         initComponents();
-    }
+     
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -807,7 +811,7 @@ public class MenuAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonaccederclientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonaccederclientesActionPerformed
-        // TODO add your handling code here:
+       new ClientesForm().setVisible(true);
     }//GEN-LAST:event_botonaccederclientesActionPerformed
 
     private void btnAccederProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederProductosActionPerformed
