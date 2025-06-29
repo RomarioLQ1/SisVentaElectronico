@@ -6,6 +6,7 @@ package Vista;
 
 
 import Vista.ClientesForm;
+import javax.swing.*;
 
 /**
  *
@@ -18,7 +19,8 @@ public class MenuAdmin extends javax.swing.JFrame {
      */
     public MenuAdmin() {
         initComponents();
-     
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // Pantalla completa
+        setLocationRelativeTo(null); // Centrada
 }
 
     /**
@@ -804,7 +806,7 @@ public class MenuAdmin extends javax.swing.JFrame {
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addContainerGap(228, Short.MAX_VALUE))
         );
 
         pack();
