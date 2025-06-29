@@ -8,6 +8,8 @@ import DAO.UsuarioDAO;
 import Modelo.Usuario;
 import javax.swing.JOptionPane;
 import Vista.MenuAdmin;
+import DAO.UsuarioDAOImpl;
+
 
 /**
  *
@@ -26,7 +28,7 @@ public class Login extends javax.swing.JFrame {
     String usuarioIngresado = txtUsuario.getText();
     String contrasenaIngresada = new String(txtContrasena.getPassword());
 
-    UsuarioDAO dao = new UsuarioDAO();
+    UsuarioDAO dao = new UsuarioDAOImpl();
     Usuario user = dao.verificarUsuario(usuarioIngresado, contrasenaIngresada);
 
     if (user != null) {
@@ -42,6 +44,7 @@ public class Login extends javax.swing.JFrame {
     }
 }
 
+    
     
 
     /**

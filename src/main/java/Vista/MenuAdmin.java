@@ -811,7 +811,9 @@ public class MenuAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonaccederclientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonaccederclientesActionPerformed
-       new ClientesForm().setVisible(true);
+       ClientesForm clientesVentana = new ClientesForm();
+       clientesVentana.setVisible(true);
+       clientesVentana.setLocationRelativeTo(null);
     }//GEN-LAST:event_botonaccederclientesActionPerformed
 
     private void btnAccederProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederProductosActionPerformed
