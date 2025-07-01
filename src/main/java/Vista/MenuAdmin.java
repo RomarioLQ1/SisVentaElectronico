@@ -5,7 +5,7 @@
 package Vista;
 
 
-import Vista.ClientesForm;
+
 import javax.swing.*;
 
 /**
@@ -806,16 +806,18 @@ public class MenuAdmin extends javax.swing.JFrame {
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+HEAD
                 .addContainerGap(228, Short.MAX_VALUE))
+
+                .addContainerGap(159, Short.MAX_VALUE))
+ f3c546c8975576a12483686c0d336e6940e1f3fb
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonaccederclientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonaccederclientesActionPerformed
-       ClientesForm clientesVentana = new ClientesForm();
-       clientesVentana.setVisible(true);
-       clientesVentana.setLocationRelativeTo(null);
+       
     }//GEN-LAST:event_botonaccederclientesActionPerformed
 
     private void btnAccederProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederProductosActionPerformed
