@@ -36,7 +36,7 @@ public class BuscarProductos extends javax.swing.JFrame {
         txtBuscarProducto = new javax.swing.JTextField();
         btnBuscarProducto = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cboxCategoriasBP = new javax.swing.JComboBox<>();
         btnanadirCarrito = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtCantidaBP = new javax.swing.JTextField();
@@ -140,7 +140,7 @@ public class BuscarProductos extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Categoria :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas las Categorias", "Resistores", "Capacitores", "LEDs", "Microcontroladores", "Sensores", "Motores", "Cables", "Herramientas" }));
+        cboxCategoriasBP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas las Categorias", "Resistores", "Capacitores", "LEDs", "Microcontroladores", "Sensores", "Motores", "Cables", "Herramientas" }));
 
         btnanadirCarrito.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/compra.png"))); // NOI18N
         btnanadirCarrito.setText("Anadir al carrito");
@@ -160,7 +160,7 @@ public class BuscarProductos extends javax.swing.JFrame {
                 .addGap(89, 89, 89)
                 .addComponent(jLabel4)
                 .addGap(63, 63, 63)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cboxCategoriasBP, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55)
                 .addComponent(btnanadirCarrito)
                 .addGap(40, 40, 40)
@@ -177,7 +177,7 @@ public class BuscarProductos extends javax.swing.JFrame {
                     .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarProducto)
                     .addComponent(jLabel4)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboxCategoriasBP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnanadirCarrito)
                     .addComponent(jLabel5)
                     .addComponent(txtCantidaBP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -293,7 +293,7 @@ public class BuscarProductos extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarProducto;
     private javax.swing.JButton btnCerrarBP;
     private javax.swing.JButton btnanadirCarrito;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cboxCategoriasBP;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
