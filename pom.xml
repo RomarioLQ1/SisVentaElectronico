@@ -16,11 +16,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
-        <exec.mainClass>Vista.MenuAdmin</exec.mainClass> <!-- Ajusta esto según tu clase principal real -->
+        <exec.mainClass>Vista.Login</exec.mainClass>
     </properties>
 
     <build>
-        <!-- Asegura la inclusión de recursos como imágenes -->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -31,7 +30,7 @@
         </resources>
 
         <plugins>
-            <!-- Plugin de compilación con soporte para Java 22 y preview features -->
+            <!-- Compilador Java con soporte para Java 22 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -44,7 +43,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Plugin para ejecutar la aplicación -->
+            <!-- Plugin para ejecutar la app -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -60,19 +59,18 @@
     </build>
 
     <dependencies>
-        <!-- Conector MySQL -->
+        <!-- MySQL -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.3.0</version>
         </dependency>
 
-        <!-- AbsoluteLayout de NetBeans -->
+        <!-- AbsoluteLayout NetBeans -->
         <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>
             <version>RELEASE220</version>
         </dependency>
     </dependencies>
-
 </project>

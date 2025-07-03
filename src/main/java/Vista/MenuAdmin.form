@@ -74,11 +74,7 @@
                   <Component id="jPanel7" alignment="0" max="32767" attributes="0"/>
                   <Component id="jPanel9" alignment="0" max="32767" attributes="0"/>
               </Group>
-HEAD
-              <EmptySpace pref="228" max="32767" attributes="0"/>
-
-              <EmptySpace pref="159" max="32767" attributes="0"/>
- f3c546c8975576a12483686c0d336e6940e1f3fb
+              <EmptySpace pref="387" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -281,6 +277,9 @@ HEAD
               <Color id="Hand Cursor"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAccederBProductosActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel10">
           <Properties>
@@ -417,6 +416,9 @@ HEAD
               <Border info="null"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAccederVentasActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel11">
           <Properties>
@@ -870,6 +872,9 @@ HEAD
               <Border info="null"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnAccederComprobantesActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -1147,6 +1152,9 @@ HEAD
               <Border info="null"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAccederAccesosActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

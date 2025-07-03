@@ -6,6 +6,7 @@ package Vista;
 
 
 
+import Vista.ClienteInterfaz;
 import javax.swing.*;
 
 /**
@@ -153,6 +154,11 @@ public class MenuAdmin extends javax.swing.JFrame {
         btnAccederBProductos.setText("Acceder");
         btnAccederBProductos.setBorder(null);
         btnAccederBProductos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAccederBProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccederBProductosActionPerformed(evt);
+            }
+        });
 
         jPanel10.setBackground(new java.awt.Color(0, 153, 51));
         jPanel10.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -226,6 +232,11 @@ public class MenuAdmin extends javax.swing.JFrame {
         btnAccederVentas.setForeground(new java.awt.Color(255, 255, 255));
         btnAccederVentas.setText("Acceder");
         btnAccederVentas.setBorder(null);
+        btnAccederVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccederVentasActionPerformed(evt);
+            }
+        });
 
         jPanel11.setBackground(new java.awt.Color(102, 153, 255));
         jPanel11.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -472,6 +483,11 @@ public class MenuAdmin extends javax.swing.JFrame {
         BtnAccederComprobantes.setForeground(new java.awt.Color(255, 255, 255));
         BtnAccederComprobantes.setText("Acceder");
         BtnAccederComprobantes.setBorder(null);
+        BtnAccederComprobantes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnAccederComprobantesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -618,6 +634,11 @@ public class MenuAdmin extends javax.swing.JFrame {
         btnAccederAccesos.setForeground(new java.awt.Color(255, 255, 255));
         btnAccederAccesos.setText("Acceder");
         btnAccederAccesos.setBorder(null);
+        btnAccederAccesos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccederAccesosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -806,22 +827,20 @@ public class MenuAdmin extends javax.swing.JFrame {
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-HEAD
-                .addContainerGap(228, Short.MAX_VALUE))
-
-                .addContainerGap(159, Short.MAX_VALUE))
- f3c546c8975576a12483686c0d336e6940e1f3fb
+                .addContainerGap(387, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonaccederclientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonaccederclientesActionPerformed
-       
+        ClienteInterfaz ventana = new ClienteInterfaz();
+        ventana.setVisible(true);      
     }//GEN-LAST:event_botonaccederclientesActionPerformed
 
     private void btnAccederProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederProductosActionPerformed
-        // TODO add your handling code here:
+        ProductoInterfaz ventana = new ProductoInterfaz();
+        ventana.setVisible(true);       
     }//GEN-LAST:event_btnAccederProductosActionPerformed
 
     private void btnAccederUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederUsuariosActionPerformed
@@ -831,6 +850,24 @@ HEAD
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnAccederBProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederBProductosActionPerformed
+        BuscarProductos ventana = new BuscarProductos();
+        ventana.setVisible(true);       
+    }//GEN-LAST:event_btnAccederBProductosActionPerformed
+
+    private void btnAccederVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederVentasActionPerformed
+       GestionVenta ventana = new GestionVenta();
+       ventana.setVisible(true);       
+    }//GEN-LAST:event_btnAccederVentasActionPerformed
+
+    private void BtnAccederComprobantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAccederComprobantesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnAccederComprobantesActionPerformed
+
+    private void btnAccederAccesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederAccesosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAccederAccesosActionPerformed
 
     /**
      * @param args the command line arguments

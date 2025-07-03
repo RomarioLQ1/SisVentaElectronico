@@ -24,25 +24,44 @@ public class Login extends javax.swing.JFrame {
         initComponents();
     }
     
-    private void validarLogin() {
-    String usuarioIngresado = txtUsuario.getText();
-    String contrasenaIngresada = new String(txtContrasena.getPassword());
+  private void validarLogin() {
+    String usuarioIngresado = txtUsuario.getText().trim();
+    String contrasenaIngresada = new String(txtContrasena.getPassword()).trim();
+
+    // Verificar campos vacíos
+    if (usuarioIngresado.isEmpty() || contrasenaIngresada.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Por favor, complete todos los campos.",
+                "Campos vacíos",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
     UsuarioDAO dao = new UsuarioDAOImpl();
     Usuario user = dao.verificarUsuario(usuarioIngresado, contrasenaIngresada);
 
     if (user != null) {
-        JOptionPane.showMessageDialog(this, "¡Bienvenido " + user.getNombreUsuario() + "!");
-        // Abrir el menú principal
+        JOptionPane.showMessageDialog(this,
+                "¡Bienvenido " + user.getNombreUsuario() + "!",
+                "Acceso permitido",
+                JOptionPane.INFORMATION_MESSAGE);
+
         MenuAdmin menu = new MenuAdmin();
         menu.setVisible(true);
-
-        // Cerrar ventana de login
         this.dispose();
     } else {
-        JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
+        JOptionPane.showMessageDialog(this,
+                "Usuario o contraseña incorrectos.\nVerifique e intente nuevamente.",
+                "Error de acceso",
+                JOptionPane.ERROR_MESSAGE);
+
+        // Limpiar campos
+        txtUsuario.setText("");
+        txtContrasena.setText("");
+        txtUsuario.requestFocus();
     }
 }
+
 
     
     
