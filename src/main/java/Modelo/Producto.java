@@ -11,26 +11,28 @@ public class Producto {
     private String descripcion;
     private double precio;
     private int stock;
+    private String categoria; // NUEVO
 
-    // Constructor completo (usado al leer desde la base de datos)
-    public Producto(int id, String nombre, String descripcion, double precio, int stock) {
+    // Constructor completo con categoría
+    public Producto(int id, String nombre, String descripcion, double precio, int stock, String categoria) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.stock = stock;
+        this.categoria = categoria;
     }
 
-    // Constructor sin ID (usado para insertar)
-    public Producto(String nombre, String descripcion, double precio, int stock) {
+    // Constructor sin ID (para insertar)
+    public Producto(String nombre, String descripcion, double precio, int stock, String categoria) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.stock = stock;
+        this.categoria = categoria;
     }
 
     // Getters y setters
-
     public int getId() {
         return id;
     }
@@ -69,5 +71,13 @@ public class Producto {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 }

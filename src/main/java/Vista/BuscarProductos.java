@@ -4,18 +4,136 @@
  */
 package Vista;
 
-/**
- *
- * @author david
- */
+import DAO.ProductoDAOImpl;
+import Conexion.CConexion;
+import DAO.CategoriaDAOImpl;
+import Modelo.Categoria;
+import Modelo.Producto;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+
 public class BuscarProductos extends javax.swing.JFrame {
 
-    /**
-     * Creates new form BuscarProductos
-     */
+    ProductoDAOImpl productoDAO = new ProductoDAOImpl();
+    DefaultTableModel modeloTabla;
+
     public BuscarProductos() {
-        initComponents();
+    initComponents();
+
+    // Eliminar texto de ayuda al enfocar
+    txtBuscarProducto.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusGained(java.awt.event.FocusEvent evt) {
+            if (txtBuscarProducto.getText().equals("Buscar por Nombre o Codigo ...")) {
+                txtBuscarProducto.setText("");
+            }
+        }
+
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            if (txtBuscarProducto.getText().isEmpty()) {
+                txtBuscarProducto.setText("Buscar por Nombre o Codigo ...");
+            }
+        }
+    });
+
+    cargarCategorias(); // Carga las categorías reales desde la base de datos
+
+    // Carga productos completos al iniciar
+    cargarProductos("", "Todas las Categorias");
+
+    // Filtro en tiempo real mientras escribe
+    txtBuscarProducto.getDocument().addDocumentListener(new DocumentListener() {
+        public void insertUpdate(DocumentEvent e) {
+            filtrar();
+        }
+
+        public void removeUpdate(DocumentEvent e) {
+            filtrar();
+        }
+
+        public void changedUpdate(DocumentEvent e) {
+            filtrar();
+        }
+
+        private void filtrar() {
+            String texto = txtBuscarProducto.getText();
+            if (texto.equals("Buscar por Nombre o Codigo ...")) {
+                texto = "";
+            }
+            String categoria = cboxCategoriasBP.getSelectedItem().toString();
+            cargarProductos(texto, categoria);
+        }
+    });
+
+    // Filtrar al cambiar categoría
+    cboxCategoriasBP.addActionListener(e -> {
+        String texto = txtBuscarProducto.getText();
+        if (texto.equals("Buscar por Nombre o Codigo ...")) {
+            texto = "";
+        }
+        String categoria = cboxCategoriasBP.getSelectedItem().toString();
+        cargarProductos(texto, categoria);
+    });
+}
+
+
+   private void cargarCategorias() {
+    try (Connection con = new CConexion().estableceConexion();
+         PreparedStatement ps = con.prepareStatement("SELECT nombre_categoria FROM categorias");
+         ResultSet rs = ps.executeQuery()) {
+
+        cboxCategoriasBP.removeAllItems();
+        cboxCategoriasBP.addItem("Todas las Categorias");
+
+        while (rs.next()) {
+            cboxCategoriasBP.addItem(rs.getString("nombre_categoria"));
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar categorías: " + e.getMessage());
     }
+}
+
+
+
+    private void cargarProductos(String textoBusqueda, String categoria) {
+    List<Producto> productos = productoDAO.obtenerTodos();
+
+    modeloTabla = new DefaultTableModel(
+            new Object[]{"ID", "Nombre", "Descripción", "Categoría", "Precio", "Stock"}, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+
+    for (Producto p : productos) {
+        boolean coincideTexto = textoBusqueda.isEmpty()
+                || p.getNombre().toLowerCase().contains(textoBusqueda.toLowerCase())
+                || p.getDescripcion().toLowerCase().contains(textoBusqueda.toLowerCase());
+
+        boolean coincideCategoria = categoria.equals("Todas las Categorias")
+                || p.getCategoria().equalsIgnoreCase(categoria);
+
+        if (coincideTexto && coincideCategoria) {
+            modeloTabla.addRow(new Object[]{
+                p.getId(),
+                p.getNombre(),
+                p.getDescripcion(),
+                p.getCategoria(),
+                p.getPrecio(),
+                p.getStock()
+            });
+        }
+    }
+
+    jTable1.setModel(modeloTabla);
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -44,7 +162,7 @@ public class BuscarProductos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setPreferredSize(new java.awt.Dimension(1636, 844));
 
@@ -127,15 +245,35 @@ public class BuscarProductos extends javax.swing.JFrame {
         jPanel3.setPreferredSize(new java.awt.Dimension(385, 84));
 
         txtBuscarProducto.setText("Buscar por Nombre o Codigo ...");
-        txtBuscarProducto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBuscarProductoActionPerformed(evt);
-            }
-        });
+        txtBuscarProducto.setForeground(new java.awt.Color(153, 153, 153)); // Gris claro
+
+        txtBuscarProducto.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent evt) {
+            if (txtBuscarProducto.getText().equals("Buscar por Nombre o Codigo ...")) {
+            txtBuscarProducto.setText("");
+            txtBuscarProducto.setForeground(new java.awt.Color(0, 0, 0)); // Negro
+        }
+    }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+            if (txtBuscarProducto.getText().trim().isEmpty()) {
+            txtBuscarProducto.setText("Buscar por Nombre o Codigo ...");
+            txtBuscarProducto.setForeground(new java.awt.Color(153, 153, 153)); // Gris claro
+        }
+    }
+});
+
 
         btnBuscarProducto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnBuscarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lupa.png"))); // NOI18N
         btnBuscarProducto.setText("Buscar");
+        btnBuscarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarProductoActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Categoria :");
@@ -247,12 +385,16 @@ public class BuscarProductos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCerrarBPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarBPActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCerrarBPActionPerformed
 
     private void txtBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarProductoActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtBuscarProductoActionPerformed
+
+    private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarProductoActionPerformed
 
     /**
      * @param args the command line arguments
