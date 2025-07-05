@@ -62,10 +62,10 @@ public class GestionVenta extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        LabelsubtoalGV = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         btnpagar = new javax.swing.JButton();
+        txtsubtotalGV = new javax.swing.JTextField();
+        txtigvGV = new javax.swing.JTextField();
+        txtcalculototalGV = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -353,6 +353,8 @@ public class GestionVenta extends javax.swing.JFrame {
         btnagregarclienteGV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/clienteeditar.png"))); // NOI18N
         btnagregarclienteGV.setText("Datos del Cliente");
 
+        txtNombrecliente.setEditable(false);
+
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel9.setText("Nombre:");
 
@@ -370,16 +372,16 @@ public class GestionVenta extends javax.swing.JFrame {
 
         jLabel12.setText("Total : S/");
 
-        LabelsubtoalGV.setText("....");
-
-        jLabel13.setText("...");
-
-        jLabel14.setText("...");
-
         btnpagar.setBackground(new java.awt.Color(204, 204, 204));
         btnpagar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnpagar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ingresos.png"))); // NOI18N
         btnpagar.setText("Procesar Venta");
+
+        txtsubtotalGV.setEditable(false);
+
+        txtigvGV.setEditable(false);
+
+        txtcalculototalGV.setEditable(false);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -392,17 +394,13 @@ public class GestionVenta extends javax.swing.JFrame {
                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(35, 35, 35)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(LabelsubtoalGV, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnpagar)
-                        .addGap(96, 96, 96))))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtigvGV, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
+                    .addComponent(txtsubtotalGV)
+                    .addComponent(txtcalculototalGV))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnpagar)
+                .addGap(96, 96, 96))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -410,16 +408,16 @@ public class GestionVenta extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(LabelsubtoalGV))
-                .addGap(31, 31, 31)
+                    .addComponent(txtsubtotalGV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13)
-                    .addComponent(btnpagar))
+                    .addComponent(btnpagar)
+                    .addComponent(txtigvGV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jLabel14))
+                    .addComponent(txtcalculototalGV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
@@ -572,7 +570,6 @@ public class GestionVenta extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LabelsubtoalGV;
     private javax.swing.JButton btnagregarclienteGV;
     private javax.swing.JButton btncerrarGV;
     private javax.swing.JButton btnpagar;
@@ -584,8 +581,6 @@ public class GestionVenta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -611,6 +606,9 @@ public class GestionVenta extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField txtNombrecliente;
     private javax.swing.JTextField txtbuscarClienteGV;
+    private javax.swing.JTextField txtcalculototalGV;
     private javax.swing.JTextField txtcantidadGV;
+    private javax.swing.JTextField txtigvGV;
+    private javax.swing.JTextField txtsubtotalGV;
     // End of variables declaration//GEN-END:variables
 }
