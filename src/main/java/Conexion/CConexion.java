@@ -31,7 +31,7 @@ public class CConexion {
             conectar=DriverManager.getConnection (cadena, usuario, contrasena);
             //JOptionPane.showMessageDialog(null, "Se conectó correctamente a la base de datos ");//
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "No se conectó a la base de datos, error al ingresar: "+e.toString());
+            JOptionPane.showMessageDialog(null, "No se conectó a la base de datos, error: "+e.toString());
         }
         
         return conectar;

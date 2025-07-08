@@ -3,18 +3,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vista.cliente;
+//importar librerias y paquetes
 
-/**
- *
- * @author david
- */
+import Controlador.ClienteControlador;
+import Modelo.Cliente;
+import javax.swing.JOptionPane;
+
 public class ClienteInterfazAgregar extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ClienteInterfazAgregar
-     */
-    public ClienteInterfazAgregar() {
+    private ClienteControlador clienteController = new ClienteControlador();
+
+    private ClienteInterfaz ventanaPrincipal;
+
+    public ClienteInterfazAgregar(ClienteInterfaz ventanaPrincipal) {
+        this.ventanaPrincipal = ventanaPrincipal;
         initComponents();
+        setLocationRelativeTo(null);
+    }
+
+    private void limpiarFormulario() {
+        txtNombre.setText("");
+        txtDni.setText("");
+        txtDireccion.setText("");
+        txtTelefono.setText("");
     }
 
     /**
@@ -33,11 +44,11 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        txtnuevoCliente = new javax.swing.JTextField();
-        txtnuevoEmail = new javax.swing.JTextField();
-        txtnuevoTelefono = new javax.swing.JTextField();
-        txtnuevoDireccion = new javax.swing.JTextField();
-        btnguardarNCliente = new javax.swing.JButton();
+        txtNombre = new javax.swing.JTextField();
+        txtDni = new javax.swing.JTextField();
+        txtTelefono = new javax.swing.JTextField();
+        txtDireccion = new javax.swing.JTextField();
+        btnRegistrar = new javax.swing.JButton();
         btncancelarNCliente = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -65,7 +76,7 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
         jLabel3.setText("Nombre : *");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setText("Email :");
+        jLabel4.setText("DNI:");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Telefono :");
@@ -77,22 +88,33 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
         jLabel7.setText("*Campos Obligatorios");
 
-        txtnuevoCliente.addActionListener(new java.awt.event.ActionListener() {
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtnuevoClienteActionPerformed(evt);
+                txtNombreActionPerformed(evt);
             }
         });
 
-        txtnuevoDireccion.addActionListener(new java.awt.event.ActionListener() {
+        txtTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtnuevoDireccionActionPerformed(evt);
+                txtTelefonoActionPerformed(evt);
             }
         });
 
-        btnguardarNCliente.setBackground(new java.awt.Color(204, 204, 204));
-        btnguardarNCliente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnguardarNCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/guardar-el-archivo.png"))); // NOI18N
-        btnguardarNCliente.setText("Agregar");
+        txtDireccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDireccionActionPerformed(evt);
+            }
+        });
+
+        btnRegistrar.setBackground(new java.awt.Color(204, 204, 204));
+        btnRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/guardar-el-archivo.png"))); // NOI18N
+        btnRegistrar.setText("Agregar");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
 
         btncancelarNCliente.setBackground(new java.awt.Color(204, 255, 255));
         btncancelarNCliente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -111,7 +133,7 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(149, Short.MAX_VALUE)
-                .addComponent(btnguardarNCliente)
+                .addComponent(btnRegistrar)
                 .addGap(106, 106, 106)
                 .addComponent(btncancelarNCliente)
                 .addGap(94, 94, 94))
@@ -128,10 +150,10 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
                                     .addComponent(jLabel6))
                                 .addGap(54, 54, 54)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtnuevoEmail)
-                                    .addComponent(txtnuevoCliente)
-                                    .addComponent(txtnuevoTelefono)
-                                    .addComponent(txtnuevoDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)))
+                                    .addComponent(txtDni)
+                                    .addComponent(txtNombre)
+                                    .addComponent(txtTelefono)
+                                    .addComponent(txtDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)))
                             .addComponent(jLabel8)
                             .addComponent(jLabel9)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -149,24 +171,24 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtnuevoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtnuevoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txtnuevoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(txtnuevoDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnguardarNCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btncancelarNCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35))
         );
@@ -237,16 +259,46 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        if (ventanaPrincipal != null) {
+            ventanaPrincipal.cargarClientes(""); // actualiza tabla
+            ventanaPrincipal.setVisible(true);   // vuelve a mostrar la principal
+        }
+        this.dispose(); // cierra esta ventana
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void txtnuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnuevoClienteActionPerformed
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtnuevoClienteActionPerformed
+    }//GEN-LAST:event_txtNombreActionPerformed
 
-    private void txtnuevoDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnuevoDireccionActionPerformed
+    private void txtDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDireccionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtnuevoDireccionActionPerformed
+    }//GEN-LAST:event_txtDireccionActionPerformed
+
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        String nombre = txtNombre.getText().trim();
+        String dni = txtDni.getText().trim();
+        String direccion = txtDireccion.getText().trim();
+        String telefono = txtTelefono.getText().trim();
+
+        Cliente nuevoCliente = new Cliente(nombre, dni, direccion, telefono);
+
+        boolean registrado = clienteController.registrarCliente(nuevoCliente);
+
+        if (registrado) {
+            JOptionPane.showMessageDialog(this, "✅ Cliente registrado correctamente.");
+            txtNombre.setText("");
+            txtDni.setText("");
+            txtDireccion.setText("");
+            txtTelefono.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "⚠ Error al registrar. Verifica los campos.");
+
+        }
+    }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTelefonoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -278,14 +330,14 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ClienteInterfazAgregar().setVisible(true);
+                new ClienteInterfazAgregar(null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btncancelarNCliente;
-    private javax.swing.JButton btnguardarNCliente;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -299,9 +351,9 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField txtnuevoCliente;
-    private javax.swing.JTextField txtnuevoDireccion;
-    private javax.swing.JTextField txtnuevoEmail;
-    private javax.swing.JTextField txtnuevoTelefono;
+    private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtDni;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

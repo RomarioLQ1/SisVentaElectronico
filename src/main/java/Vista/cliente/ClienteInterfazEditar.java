@@ -3,6 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vista.cliente;
+//librerias y paquetes
+
+import Controlador.ClienteControlador;
+import Modelo.Cliente;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -10,11 +15,21 @@ package Vista.cliente;
  */
 public class ClienteInterfazEditar extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ClienteInterfazEditar
-     */
-    public ClienteInterfazEditar() {
+    private Cliente cliente;
+    private ClienteControlador clienteController = new ClienteControlador();
+    private ClienteInterfaz ventanaPrincipal;
+
+    public ClienteInterfazEditar(Cliente cliente, ClienteInterfaz ventanaPrincipal) {
+        this.cliente = cliente;
+        this.ventanaPrincipal = ventanaPrincipal;
         initComponents();
+        setLocationRelativeTo(null);
+
+        // Llenar los campos del formulario
+        txtNombre.setText(cliente.getNombre());
+        txtDni.setText(cliente.getDni());
+        txtTelefono.setText(cliente.getTelefono());
+        txtDireccion.setText(cliente.getDireccion());
     }
 
     /**
@@ -41,10 +56,10 @@ public class ClienteInterfazEditar extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        txteditarcliente = new javax.swing.JTextField();
-        txteditatcorreo = new javax.swing.JTextField();
-        txteditartelefono = new javax.swing.JTextField();
-        txteditardireccion = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtDni = new javax.swing.JTextField();
+        txtTelefono = new javax.swing.JTextField();
+        txtDireccion = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -58,6 +73,11 @@ public class ClienteInterfazEditar extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/circuito.png"))); // NOI18N
 
         btncerrarEC.setText("Cerrar");
+        btncerrarEC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncerrarECActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -107,7 +127,7 @@ public class ClienteInterfazEditar extends javax.swing.JFrame {
         jLabel7.setText("Nombre * :");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setText("Email :");
+        jLabel8.setText("DNI:");
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel9.setText("Telefono :");
@@ -119,10 +139,21 @@ public class ClienteInterfazEditar extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(102, 102, 102));
         jLabel11.setText("*Campos obligatorios");
 
+        txtDni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDniActionPerformed(evt);
+            }
+        });
+
         jButton1.setBackground(new java.awt.Color(204, 204, 204));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/procesamiento-de-datos.png"))); // NOI18N
         jButton1.setText("Actualizar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(204, 255, 255));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -149,10 +180,10 @@ public class ClienteInterfazEditar extends javax.swing.JFrame {
                                     .addComponent(jLabel10))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txteditarcliente)
-                                    .addComponent(txteditatcorreo)
-                                    .addComponent(txteditartelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
-                                    .addComponent(txteditardireccion)))))
+                                    .addComponent(txtNombre)
+                                    .addComponent(txtDni)
+                                    .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                                    .addComponent(txtDireccion)))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(59, 59, 59)
                         .addComponent(jLabel11))
@@ -175,19 +206,19 @@ public class ClienteInterfazEditar extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(txteditarcliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(txteditatcorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(txteditartelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(txteditardireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addComponent(jLabel11)
                 .addGap(32, 32, 32)
@@ -219,6 +250,40 @@ public class ClienteInterfazEditar extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtDniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDniActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDniActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String nombre = txtNombre.getText().trim();
+        String dni = txtDni.getText().trim();
+        String direccion = txtDireccion.getText().trim();
+        String telefono = txtTelefono.getText().trim();
+
+        cliente.setNombre(nombre);
+        cliente.setDni(dni);
+        cliente.setDireccion(direccion);
+        cliente.setTelefono(telefono);
+
+        boolean actualizado = clienteController.actualizarCliente(cliente);
+
+        if (actualizado) {
+            JOptionPane.showMessageDialog(this, "Cliente actualizado correctamente.");
+            ventanaPrincipal.cargarClientes(""); // actualiza la tabla principal
+            this.dispose(); // cierra la ventana de edición
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al actualizar cliente. Verifica los datos.");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btncerrarECActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarECActionPerformed
+        if (ventanaPrincipal != null) {
+            ventanaPrincipal.cargarClientes(""); // actualiza tabla
+            ventanaPrincipal.setVisible(true);   // vuelve a mostrar la principal
+        }
+        this.dispose(); // cierra esta ventana
+    }//GEN-LAST:event_btncerrarECActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -249,7 +314,7 @@ public class ClienteInterfazEditar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ClienteInterfazEditar().setVisible(true);
+                new ClienteInterfazEditar(null, null).setVisible(true);
             }
         });
     }
@@ -272,9 +337,9 @@ public class ClienteInterfazEditar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField txteditarcliente;
-    private javax.swing.JTextField txteditardireccion;
-    private javax.swing.JTextField txteditartelefono;
-    private javax.swing.JTextField txteditatcorreo;
+    private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtDni;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

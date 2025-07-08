@@ -18,7 +18,16 @@ public class Cliente {
 
     // Constructor vacío
     public Cliente() {}
+     //constructores para registrar clientes 
+    public Cliente(String nombre, String dni, String direccion, String telefono) {
+        this.nombre = nombre;
+        this.dni = dni;
+        this.direccion = direccion;
+        this.telefono = telefono;
+    }
 
+    
+    
     // Constructor completo
     public Cliente(int idCliente, String nombre, String dni, String telefono, String direccion) {
         this.idCliente = idCliente;

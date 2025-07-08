@@ -17,14 +17,14 @@ public class ClienteDAOImpl implements ClienteDAO {
 
     @Override
     public boolean insertar(Cliente c) {
-        String sql = "INSERT INTO clientes (dni_cliente, nombre_cliente, telefono, direccion) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO clientes (dni_cliente, nombre_cliente, direccion,telefono) VALUES (?, ?, ?, ?)";
         try (Connection con = conector.estableceConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, c.getDni());
             ps.setString(2, c.getNombre());
-            ps.setString(3, c.getTelefono());
-            ps.setString(4, c.getDireccion());
+            ps.setString(3, c.getDireccion());
+            ps.setString(4, c.getTelefono());
 
             return ps.executeUpdate() > 0;
 
@@ -85,14 +85,14 @@ public class ClienteDAOImpl implements ClienteDAO {
 
     @Override
     public boolean actualizar(Cliente c) {
-        String sql = "UPDATE clientes SET nombre_cliente=?, dni_cliente=?, telefono=?, direccion=? WHERE id_cliente=?";
+        String sql = "UPDATE clientes SET nombre_cliente=?, dni_cliente=?, direccion=?,telefono=? WHERE id_cliente=?";
         try (Connection con = conector.estableceConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, c.getNombre());
             ps.setString(2, c.getDni());
-            ps.setString(3, c.getTelefono());
-            ps.setString(4, c.getDireccion());
+            ps.setString(3, c.getDireccion());
+             ps.setString(4, c.getTelefono());
             ps.setInt(5, c.getIdCliente());
 
             return ps.executeUpdate() > 0;
