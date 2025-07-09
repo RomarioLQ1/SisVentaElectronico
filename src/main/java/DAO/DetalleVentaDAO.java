@@ -8,6 +8,5 @@ import Modelo.DetalleVenta;
 import java.util.List;
 
 public interface DetalleVentaDAO {
-    boolean insertarDetalle(DetalleVenta detalle);
-    List<DetalleVenta> listarPorVenta(int idVenta);
+    boolean insertarDetallesVenta(List<DetalleVenta> detalles, int idVenta);
 }

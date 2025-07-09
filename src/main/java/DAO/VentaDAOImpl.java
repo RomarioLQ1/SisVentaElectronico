@@ -4,81 +4,38 @@
  */
 package DAO;
 
-import Conexion.CConexion;
 import Modelo.Venta;
-
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import Conexion.CConexion;
 
 public class VentaDAOImpl implements VentaDAO {
 
-    CConexion conector = new CConexion();
+    private CConexion conector = new CConexion();
 
     @Override
-    public boolean insertar(Venta v) {
-        String sql = "INSERT INTO venta (cliente_id, fecha, total) VALUES (?, ?, ?)";
-        try (Connection con = conector.estableceConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, v.getClienteId());
-            ps.setTimestamp(2, Timestamp.valueOf(v.getFecha()));
-            ps.setDouble(3, v.getTotal());
-
-            return ps.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.err.println("Error al insertar venta: " + e.getMessage());
-            return false;
-        }
-    }
-
-    @Override
-    public List<Venta> obtenerTodas() {
-        List<Venta> lista = new ArrayList<>();
-        String sql = "SELECT * FROM venta";
+    public int registrarVenta(Venta venta) {
+        int idGenerado = -1;
+        String sql = "INSERT INTO ventas (nombre_cliente, subtotal, igv, total) VALUES (?, ?, ?, ?)";
 
         try (Connection con = conector.estableceConexion();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            while (rs.next()) {
-                lista.add(new Venta(
-                    rs.getInt("id"),
-                    rs.getInt("cliente_id"),
-                    rs.getTimestamp("fecha").toLocalDateTime(),
-                    rs.getDouble("total")
-                ));
-            }
+            ps.setString(1, venta.getNombreCliente());
+            ps.setDouble(2, venta.getSubtotal());
+            ps.setDouble(3, venta.getIgv());
+            ps.setDouble(4, venta.getTotal());
 
-        } catch (SQLException e) {
-            System.err.println("Error al obtener ventas: " + e.getMessage());
-        }
-        return lista;
-    }
+            ps.executeUpdate();
 
-    @Override
-    public Venta buscarPorId(int id) {
-        String sql = "SELECT * FROM venta WHERE id = ?";
-        try (Connection con = conector.estableceConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-
+            ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
-                return new Venta(
-                    rs.getInt("id"),
-                    rs.getInt("cliente_id"),
-                    rs.getTimestamp("fecha").toLocalDateTime(),
-                    rs.getDouble("total")
-                );
+                idGenerado = rs.getInt(1);
             }
 
-        } catch (SQLException e) {
-            System.err.println("Error al buscar venta: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return null;
+
+        return idGenerado;
     }
 }

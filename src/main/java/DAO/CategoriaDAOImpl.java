@@ -12,28 +12,26 @@ import java.util.List;
 
 public class CategoriaDAOImpl implements CategoriaDAO {
 
-    CConexion conector = new CConexion();
+    private final CConexion conector = new CConexion();
 
     @Override
     public List<Categoria> obtenerTodas() {
         List<Categoria> lista = new ArrayList<>();
-
-        String sql = "SELECT id_categoria, nombre_categoria FROM categorias";
+        String sql = "SELECT * FROM categorias";
 
         try (Connection con = conector.estableceConexion();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                Categoria c = new Categoria(
-                        rs.getInt("id_categoria"),
-                        rs.getString("nombre_categoria")
-                );
-                lista.add(c);
+                Categoria cat = new Categoria();
+                cat.setIdCategoria(rs.getInt("id_categoria"));
+                cat.setNombreCategoria(rs.getString("nombre_categoria"));
+                lista.add(cat);
             }
 
         } catch (SQLException e) {
-            System.err.println("Error al obtener categorías: " + e.getMessage());
+            System.out.println("Error al obtener categorías: " + e.getMessage());
         }
 
         return lista;

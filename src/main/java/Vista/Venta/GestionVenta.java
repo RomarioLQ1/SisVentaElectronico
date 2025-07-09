@@ -1,21 +1,166 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-package Vista;
 
-/**
- *
- * @author david
- */
+
+package Vista.Venta;
+
+import Controlador.VentaControlador;
+import DAO.ProductoDAO;
+import DAO.ProductoDAOImpl;
+import Modelo.DetalleVenta;
+import Modelo.Producto;
+import Modelo.Venta;
+import Conexion.CConexion;
+
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.util.ArrayList;
+
 public class GestionVenta extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GestionVenta
-     */
+    private DefaultTableModel modeloCarrito;
+    private int item = 1; // Contador de ítems agregados
+
     public GestionVenta() {
         initComponents();
+        // Evento para seleccionar un producto y mostrar cantidad por defecto = 1
+        jTable1.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && jTable1.getSelectedRow() != -1) {
+                txtcantidadGV.setText("1"); // siempre al seleccionar, se pone 1
+            }
+        });
+
+        // 🔽 ENVOLVER TODO EL CONTENIDO CON SCROLL SI EXCEDE LA PANTALLA
+        JScrollPane scrollPane = new JScrollPane(getContentPane());
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        // 🔽 Crear un nuevo JFrame temporal para ponerle el scrollPane como contenido
+        this.setContentPane(scrollPane);
+
+        // 🔽 Maximizar la ventana al iniciar (opcional pero recomendado)
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        // 🔽 Refrescar para asegurar que todo se renderice bien
+        revalidate();
+        repaint();
+
+        cargarCategorias(); // Cargar categorías desde BD
+        cargarProductos("", ""); // Mostrar todos los productos
+        configurarEventos(); // Activar filtros
+        modeloCarrito = (DefaultTableModel) jTable2.getModel();
+
     }
+
+    // ============================ CARGAR CATEGORÍAS ============================
+    private void cargarCategorias() {
+        jComboBox1.removeAllItems();
+        jComboBox1.addItem("Todas las Categorias"); // Opción por defecto
+        List<String> categorias = new ProductoDAOImpl().obtenerCategorias();
+        for (String categoria : categorias) {
+            jComboBox1.addItem(categoria);
+        }
+    }
+
+    // ============================ CARGAR PRODUCTOS ============================
+    private void cargarProductos(String filtro, String categoria) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new String[]{"ID", "Nombre", "Descripción", "Precio", "Stock", "Categoría"});
+
+        List<Producto> productos = new ProductoDAOImpl().buscarProductos(filtro, categoria);
+        for (Producto p : productos) {
+            modelo.addRow(new Object[]{
+                p.getIdProducto(),
+                p.getNombreProducto(),
+                p.getDescripcion(),
+                p.getPrecio(),
+                p.getStock(),
+                p.getNombreCategoria()
+            });
+        }
+
+        jTable1.setModel(modelo);
+    }
+
+    // ========================== CONFIGURACIÓN DE EVENTOS ==========================
+    private void configurarEventos() {
+        // Buscar en tiempo real
+        jTextField1.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                filtrar();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                filtrar();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                filtrar();
+            }
+
+            private void filtrar() {
+                String texto = jTextField1.getText().trim();
+                String categoria = jComboBox1.getSelectedItem() != null ? jComboBox1.getSelectedItem().toString() : "";
+                if (categoria.equals("Todas las Categorias")) {
+                    categoria = "";
+                }
+                cargarProductos(texto, categoria);
+            }
+        });
+
+        // Cambiar categoría
+        jComboBox1.addActionListener(e -> {
+            String texto = jTextField1.getText().trim();
+            String categoria = jComboBox1.getSelectedItem() != null ? jComboBox1.getSelectedItem().toString() : "";
+            if (categoria.equals("Todas las Categorias")) {
+                categoria = "";
+            }
+            cargarProductos(texto, categoria);
+        });
+    }
+
+    private void calcularTotales() {
+        double subtotal = 0;
+        for (int i = 0; i < modeloCarrito.getRowCount(); i++) {
+            subtotal += Double.parseDouble(modeloCarrito.getValueAt(i, 5).toString());
+        }
+
+        double igv = subtotal * 0.18;
+        double total = subtotal + igv;
+
+        txtsubtotalGV.setText(String.format("%.2f", subtotal));
+        txtigvGV.setText(String.format("%.2f", igv));
+        txtcalculototalGV.setText(String.format("%.2f", total));
+    }
+
+    
+    // ========== MÉTODO PARA CALCULAR TOTALES ==========
+      private void actualizarTotales() {
+        double subtotal = 0.0;
+
+        DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            double sub = Double.parseDouble(modelo.getValueAt(i, 3).toString());
+            subtotal += sub;
+        }
+
+        double igv = subtotal * 0.18;
+        double total = subtotal + igv;
+
+        txtsubtotalGV.setText(String.format("%.2f", subtotal));
+        txtigvGV.setText(String.format("%.2f", igv));
+        txtcalculototalGV.setText(String.format("%.2f", total));
+    }
+
+
+
+
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,7 +185,6 @@ public class GestionVenta extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -191,16 +335,6 @@ public class GestionVenta extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(204, 204, 204));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lupa.png"))); // NOI18N
-        jButton2.setText("Buscar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas las Categorias", "Resistores", "Capacitores", "LEDs", "Microcontroladores", "Sensores", "Motores", "Cables", "Herramientas" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -235,21 +369,18 @@ public class GestionVenta extends javax.swing.JFrame {
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2)
-                                .addGap(6, 6, 6))
+                                .addGap(108, 108, 108))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2)
                     .addComponent(jLabel6))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1)
@@ -322,10 +453,7 @@ public class GestionVenta extends javax.swing.JFrame {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Producto", "Cantidad", "Precio Unitario", "Subtotal"
@@ -362,6 +490,11 @@ public class GestionVenta extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/quitar-carrito.png"))); // NOI18N
         jButton3.setText("Quitar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Totales"));
@@ -376,12 +509,32 @@ public class GestionVenta extends javax.swing.JFrame {
         btnpagar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnpagar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ingresos.png"))); // NOI18N
         btnpagar.setText("Procesar Venta");
+        btnpagar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnpagarActionPerformed(evt);
+            }
+        });
 
         txtsubtotalGV.setEditable(false);
+        txtsubtotalGV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtsubtotalGVActionPerformed(evt);
+            }
+        });
 
         txtigvGV.setEditable(false);
+        txtigvGV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtigvGVActionPerformed(evt);
+            }
+        });
 
         txtcalculototalGV.setEditable(false);
+        txtcalculototalGV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtcalculototalGVActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -511,7 +664,42 @@ public class GestionVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_txtcantidadGVActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+                                                   
+    int fila = jTable1.getSelectedRow();
+
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un producto de la tabla.");
+        return;
+    }
+
+    try {
+        // Obtener datos del producto seleccionado
+        String nombreProducto = jTable1.getValueAt(fila, 1).toString(); // Nombre
+        double precioUnitario = Double.parseDouble(jTable1.getValueAt(fila, 3).toString()); // Precio
+        int cantidad = Integer.parseInt(txtcantidadGV.getText()); // Cantidad ingresada
+        double subtotal = precioUnitario * cantidad; // Subtotal
+
+        // Agregar fila al carrito (jTable2)
+        DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+        modelo.addRow(new Object[]{
+            nombreProducto,     // Columna 0: Producto
+            cantidad,           // Columna 1: Cantidad
+            precioUnitario,     // Columna 2: Precio Unitario
+            subtotal            // Columna 3: Subtotal
+        });
+
+        // Actualizar totales
+        actualizarTotales();
+
+        // Restablecer cantidad a 1
+        txtcantidadGV.setText("1");
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "La cantidad debe ser un número válido.");
+    
+}
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -522,10 +710,6 @@ public class GestionVenta extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void txtbuscarClienteGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarClienteGVActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtbuscarClienteGVActionPerformed
@@ -533,6 +717,95 @@ public class GestionVenta extends javax.swing.JFrame {
     private void btncerrarGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarGVActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btncerrarGVActionPerformed
+
+    private void txtsubtotalGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtsubtotalGVActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtsubtotalGVActionPerformed
+
+    private void txtigvGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtigvGVActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtigvGVActionPerformed
+
+    private void txtcalculototalGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcalculototalGVActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtcalculototalGVActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       
+        int fila = jTable2.getSelectedRow(); // jTable2 es el carrito
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un producto del carrito para quitar.");
+        } else {
+            DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+            modelo.removeRow(fila);
+
+            JOptionPane.showMessageDialog(this, "Producto eliminado del carrito.");
+            actualizarTotales(); // Actualiza subtotal, igv y total
+
+        }
+
+    
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnpagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpagarActionPerformed
+        if (jTable2.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "El carrito está vacío.");
+            return;
+        }
+
+        String cliente = txtNombrecliente.getText().trim();
+        if (cliente.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar el nombre del cliente.");
+            return;
+        }
+
+        // Crear modelo Venta
+        Venta venta = new Venta();
+        venta.setNombreCliente(cliente);
+        venta.setSubtotal(Double.parseDouble(txtsubtotalGV.getText()));
+        venta.setIgv(Double.parseDouble(txtigvGV.getText()));
+        venta.setTotal(Double.parseDouble(txtcalculototalGV.getText()));
+
+        // Extraer productos del carrito
+        List<DetalleVenta> detalles = new ArrayList<>();
+        DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            DetalleVenta dv = new DetalleVenta();
+            dv.setProducto(modelo.getValueAt(i, 0).toString());
+            dv.setCantidad(Integer.parseInt(modelo.getValueAt(i, 1).toString()));
+            dv.setPrecioUnitario(Double.parseDouble(modelo.getValueAt(i, 2).toString()));
+            dv.setSubtotal(Double.parseDouble(modelo.getValueAt(i, 3).toString()));
+            detalles.add(dv);
+        }
+
+        venta.setDetalles(detalles);
+
+        // Registrar venta
+        try {
+            CConexion conector = new CConexion(); // ✅ Usa tu clase CConexion
+            Connection con = conector.estableceConexion(); // ✅ Usa el método correcto
+
+            VentaControlador controlador = new VentaControlador(); // ✅ CONSTRUCTOR CORRECTO
+
+            boolean exito = controlador.registrarVenta(venta);
+
+            if (exito) {
+                JOptionPane.showMessageDialog(this, "¡Venta registrada correctamente!");
+                modelo.setRowCount(0); // Limpiar carrito
+                txtsubtotalGV.setText("");
+                txtigvGV.setText("");
+                txtcalculototalGV.setText("");
+                txtcantidadGV.setText("1");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo registrar la venta.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al registrar venta.");
+        }
+
+    }//GEN-LAST:event_btnpagarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -574,7 +847,6 @@ public class GestionVenta extends javax.swing.JFrame {
     private javax.swing.JButton btncerrarGV;
     private javax.swing.JButton btnpagar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;

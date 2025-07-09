@@ -4,49 +4,47 @@
  */
 package Modelo;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 public class Venta {
-
-    private int id;
-    private int clienteId;
-    private LocalDateTime fecha;
+    private int idVenta;
+    private String nombreCliente;
+    private double subtotal;
+    private double igv;
     private double total;
+    private List<DetalleVenta> detalles;
 
-    // Constructor vacío (requerido por frameworks o JavaBeans)
-    public Venta() {}
-
-    // Constructor completo (usado por DAO)
-    public Venta(int id, int clienteId, LocalDateTime fecha, double total) {
-        this.id = id;
-        this.clienteId = clienteId;
-        this.fecha = fecha;
-        this.total = total;
+    // Getters y setters
+    public int getIdVenta() {
+        return idVenta;
     }
 
-    // Getters y Setters
-    public int getId() {
-        return id;
+    public void setIdVenta(int idVenta) {
+        this.idVenta = idVenta;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getNombreCliente() {
+        return nombreCliente;
     }
 
-    public int getClienteId() {
-        return clienteId;
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
     }
 
-    public void setClienteId(int clienteId) {
-        this.clienteId = clienteId;
+    public double getSubtotal() {
+        return subtotal;
     }
 
-    public LocalDateTime getFecha() {
-        return fecha;
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
     }
 
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
+    public double getIgv() {
+        return igv;
+    }
+
+    public void setIgv(double igv) {
+        this.igv = igv;
     }
 
     public double getTotal() {
@@ -55,5 +53,13 @@ public class Venta {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public List<DetalleVenta> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetalleVenta> detalles) {
+        this.detalles = detalles;
     }
 }

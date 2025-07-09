@@ -2,51 +2,32 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
+
 package Modelo;
 
 public class Producto {
-
-    private int id;
-    private String nombre;
+    private int idProducto;
+    private String nombreProducto;
     private String descripcion;
     private double precio;
     private int stock;
-    private String categoria; // NUEVO
+    private String nombreCategoria;
 
-    // Constructor completo con categoría
-    public Producto(int id, String nombre, String descripcion, double precio, int stock, String categoria) {
-        this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.stock = stock;
-        this.categoria = categoria;
+    public int getIdProducto() {
+        return idProducto;
     }
 
-    // Constructor sin ID (para insertar)
-    public Producto(String nombre, String descripcion, double precio, int stock, String categoria) {
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.stock = stock;
-        this.categoria = categoria;
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
     }
 
-    // Getters y setters
-    public int getId() {
-        return id;
+    public String getNombreProducto() {
+        return nombreProducto;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
     }
 
     public String getDescripcion() {
@@ -73,11 +54,11 @@ public class Producto {
         this.stock = stock;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getNombreCategoria() {
+        return nombreCategoria;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
     }
 }

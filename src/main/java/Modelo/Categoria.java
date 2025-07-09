@@ -5,37 +5,35 @@
 package Modelo;
 
 public class Categoria {
+    private int idCategoria;
+    private String nombreCategoria;
 
-    private int id;
-    private String nombre;
-
-    public Categoria(int id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
+    public Categoria() {
     }
 
-    public Categoria(String nombre) {
-        this.nombre = nombre;
+    public Categoria(int idCategoria, String nombreCategoria) {
+        this.idCategoria = idCategoria;
+        this.nombreCategoria = nombreCategoria;
     }
 
-    public int getId() {
-        return id;
+    public int getIdCategoria() {
+        return idCategoria;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreCategoria() {
+        return nombreCategoria;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
     }
 
     @Override
     public String toString() {
-        return nombre;
+        return nombreCategoria;
     }
 }

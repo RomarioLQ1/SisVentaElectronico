@@ -5,26 +5,14 @@
 package Modelo;
 
 public class DetalleVenta {
-
     private int idDetalle;
     private int idVenta;
-    private int idProducto;
+    private String producto;
     private int cantidad;
     private double precioUnitario;
     private double subtotal;
 
-    public DetalleVenta() {}
-
-    public DetalleVenta(int idDetalle, int idVenta, int idProducto, int cantidad, double precioUnitario, double subtotal) {
-        this.idDetalle = idDetalle;
-        this.idVenta = idVenta;
-        this.idProducto = idProducto;
-        this.cantidad = cantidad;
-        this.precioUnitario = precioUnitario;
-        this.subtotal = subtotal;
-    }
-
-    // Getters y Setters
+    // Getters y setters
     public int getIdDetalle() {
         return idDetalle;
     }
@@ -41,12 +29,12 @@ public class DetalleVenta {
         this.idVenta = idVenta;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public String getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(String producto) {
+        this.producto = producto;
     }
 
     public int getCantidad() {

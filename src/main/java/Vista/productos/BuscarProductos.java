@@ -1,145 +1,108 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-package Vista;
 
-import DAO.ProductoDAOImpl;
-import Conexion.CConexion;
-import DAO.CategoriaDAOImpl;
-import Modelo.Categoria;
+
+package Vista.productos;
+
+import Controlador.ProductoControlador;
 import Modelo.Producto;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 
 public class BuscarProductos extends javax.swing.JFrame {
 
-    ProductoDAOImpl productoDAO = new ProductoDAOImpl();
-    DefaultTableModel modeloTabla;
+    private final ProductoControlador controlador;
 
     public BuscarProductos() {
-    initComponents();
+        initComponents(); // No tocar: generado por NetBeans
+        controlador = new ProductoControlador();
 
-    // Eliminar texto de ayuda al enfocar
-    txtBuscarProducto.addFocusListener(new java.awt.event.FocusAdapter() {
-        public void focusGained(java.awt.event.FocusEvent evt) {
-            if (txtBuscarProducto.getText().equals("Buscar por Nombre o Codigo ...")) {
-                txtBuscarProducto.setText("");
-            }
-        }
+        cargarCategorias(); // Llenar combo
+        cargarTablaProductos("", ""); // Mostrar todos los productos
 
-        public void focusLost(java.awt.event.FocusEvent evt) {
-            if (txtBuscarProducto.getText().isEmpty()) {
-                txtBuscarProducto.setText("Buscar por Nombre o Codigo ...");
-            }
-        }
-    });
-
-    cargarCategorias(); // Carga las categorías reales desde la base de datos
-
-    // Carga productos completos al iniciar
-    cargarProductos("", "Todas las Categorias");
-
-    // Filtro en tiempo real mientras escribe
-    txtBuscarProducto.getDocument().addDocumentListener(new DocumentListener() {
-        public void insertUpdate(DocumentEvent e) {
-            filtrar();
-        }
-
-        public void removeUpdate(DocumentEvent e) {
-            filtrar();
-        }
-
-        public void changedUpdate(DocumentEvent e) {
-            filtrar();
-        }
-
-        private void filtrar() {
-            String texto = txtBuscarProducto.getText();
-            if (texto.equals("Buscar por Nombre o Codigo ...")) {
-                texto = "";
-            }
-            String categoria = cboxCategoriasBP.getSelectedItem().toString();
-            cargarProductos(texto, categoria);
-        }
-    });
-
-    // Filtrar al cambiar categoría
-    cboxCategoriasBP.addActionListener(e -> {
-        String texto = txtBuscarProducto.getText();
-        if (texto.equals("Buscar por Nombre o Codigo ...")) {
-            texto = "";
-        }
-        String categoria = cboxCategoriasBP.getSelectedItem().toString();
-        cargarProductos(texto, categoria);
-    });
-}
-
-
-   private void cargarCategorias() {
-    try (Connection con = new CConexion().estableceConexion();
-         PreparedStatement ps = con.prepareStatement("SELECT nombre_categoria FROM categorias");
-         ResultSet rs = ps.executeQuery()) {
-
-        cboxCategoriasBP.removeAllItems();
-        cboxCategoriasBP.addItem("Todas las Categorias");
-
-        while (rs.next()) {
-            cboxCategoriasBP.addItem(rs.getString("nombre_categoria"));
-        }
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Error al cargar categorías: " + e.getMessage());
+        configurarEventos(); // Activar búsqueda y filtros
     }
-}
 
-
-
-    private void cargarProductos(String textoBusqueda, String categoria) {
-    List<Producto> productos = productoDAO.obtenerTodos();
-
-    modeloTabla = new DefaultTableModel(
-            new Object[]{"ID", "Nombre", "Descripción", "Categoría", "Precio", "Stock"}, 0) {
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
+    // ======================= CARGAR CATEGORÍAS ========================
+    private void cargarCategorias() {
+        List<String> categorias = controlador.obtenerCategorias();
+        cboxCategoriasBP.removeAllItems();
+        cboxCategoriasBP.addItem("Todas"); // Filtro general
+        for (String cat : categorias) {
+            cboxCategoriasBP.addItem(cat);
         }
-    };
+    }
 
-    for (Producto p : productos) {
-        boolean coincideTexto = textoBusqueda.isEmpty()
-                || p.getNombre().toLowerCase().contains(textoBusqueda.toLowerCase())
-                || p.getDescripcion().toLowerCase().contains(textoBusqueda.toLowerCase());
+    // ======================= CARGAR PRODUCTOS A LA TABLA ========================
+    private void cargarTablaProductos(String filtro, String categoria) {
+        if (categoria.equals("Todas")) {
+            categoria = ""; // Todas las categorías
+        }
 
-        boolean coincideCategoria = categoria.equals("Todas las Categorias")
-                || p.getCategoria().equalsIgnoreCase(categoria);
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        modelo.setRowCount(0); // Limpiar tabla
 
-        if (coincideTexto && coincideCategoria) {
-            modeloTabla.addRow(new Object[]{
-                p.getId(),
-                p.getNombre(),
-                p.getDescripcion(),
-                p.getCategoria(),
+        List<Producto> lista = controlador.buscarProductos(filtro, categoria);
+        for (Producto p : lista) {
+            modelo.addRow(new Object[]{
+                p.getIdProducto(),
+                p.getNombreProducto(),
+                p.getNombreCategoria(),
                 p.getPrecio(),
-                p.getStock()
+                p.getStock(),
+                p.getDescripcion()
             });
         }
     }
 
-    jTable1.setModel(modeloTabla);
-}
+    // ======================= BUSCAR PRODUCTOS ========================
+    private void buscar() {
+        String filtro = txtBuscarProducto.getText().trim();
+        if (filtro.equals("Buscar por Nombre o Codigo ...")) {
+            filtro = "";
+        }
+
+        String categoria = cboxCategoriasBP.getSelectedItem() != null
+                ? cboxCategoriasBP.getSelectedItem().toString()
+                : "";
+
+        cargarTablaProductos(filtro, categoria);
+    }
+
+    // ======================= CONFIGURAR EVENTOS ========================
+    private void configurarEventos() {
+        txtBuscarProducto.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                buscar();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                buscar();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                buscar();
+            }
+        });
+
+        txtBuscarProducto.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                if (txtBuscarProducto.getText().equals("Buscar por Nombre o Codigo ...")) {
+                    txtBuscarProducto.setText("");
+                }
+            }
+
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                if (txtBuscarProducto.getText().isEmpty()) {
+                    txtBuscarProducto.setText("Buscar por Nombre o Codigo ...");
+                }
+            }
+        });
+    }
+    
 
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -152,12 +115,8 @@ public class BuscarProductos extends javax.swing.JFrame {
         btnCerrarBP = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         txtBuscarProducto = new javax.swing.JTextField();
-        btnBuscarProducto = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         cboxCategoriasBP = new javax.swing.JComboBox<>();
-        btnanadirCarrito = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        txtCantidaBP = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -244,46 +203,20 @@ public class BuscarProductos extends javax.swing.JFrame {
         jPanel3.setPreferredSize(new java.awt.Dimension(385, 84));
 
         txtBuscarProducto.setText("Buscar por Nombre o Codigo ...");
-        txtBuscarProducto.setForeground(new java.awt.Color(153, 153, 153)); // Gris claro
-
-        txtBuscarProducto.addFocusListener(new java.awt.event.FocusAdapter() {
-            @Override
-            public void focusGained(java.awt.event.FocusEvent evt) {
-            if (txtBuscarProducto.getText().equals("Buscar por Nombre o Codigo ...")) {
-            txtBuscarProducto.setText("");
-            txtBuscarProducto.setForeground(new java.awt.Color(0, 0, 0)); // Negro
-        }
-    }
-
-            @Override
-            public void focusLost(java.awt.event.FocusEvent evt) {
-            if (txtBuscarProducto.getText().trim().isEmpty()) {
-            txtBuscarProducto.setText("Buscar por Nombre o Codigo ...");
-            txtBuscarProducto.setForeground(new java.awt.Color(153, 153, 153)); // Gris claro
-        }
-    }
-});
-
-
-        btnBuscarProducto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnBuscarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lupa.png"))); // NOI18N
-        btnBuscarProducto.setText("Buscar");
-        btnBuscarProducto.addActionListener(new java.awt.event.ActionListener() {
+        txtBuscarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarProductoActionPerformed(evt);
+                txtBuscarProductoActionPerformed(evt);
             }
         });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Categoria :");
 
-        cboxCategoriasBP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas las Categorias", "Resistores", "Capacitores", "LEDs", "Microcontroladores", "Sensores", "Motores", "Cables", "Herramientas" }));
-
-        btnanadirCarrito.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/compra.png"))); // NOI18N
-        btnanadirCarrito.setText("Anadir al carrito");
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Cantidad :");
+        cboxCategoriasBP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboxCategoriasBPActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -292,33 +225,21 @@ public class BuscarProductos extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(btnBuscarProducto)
-                .addGap(89, 89, 89)
+                .addGap(199, 199, 199)
                 .addComponent(jLabel4)
                 .addGap(63, 63, 63)
                 .addComponent(cboxCategoriasBP, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55)
-                .addComponent(btnanadirCarrito)
-                .addGap(40, 40, 40)
-                .addComponent(jLabel5)
-                .addGap(18, 18, 18)
-                .addComponent(txtCantidaBP, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(515, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(11, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscarProducto)
                     .addComponent(jLabel4)
-                    .addComponent(cboxCategoriasBP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnanadirCarrito)
-                    .addComponent(jLabel5)
-                    .addComponent(txtCantidaBP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17))
+                    .addComponent(cboxCategoriasBP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24))
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -384,62 +305,31 @@ public class BuscarProductos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCerrarBPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarBPActionPerformed
-        this.dispose();
+        dispose();
     }//GEN-LAST:event_btnCerrarBPActionPerformed
 
     private void txtBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarProductoActionPerformed
-        
+       
     }//GEN-LAST:event_txtBuscarProductoActionPerformed
 
-    private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarProductoActionPerformed
+    private void cboxCategoriasBPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxCategoriasBPActionPerformed
+        buscar(); 
+    }//GEN-LAST:event_cboxCategoriasBPActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BuscarProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BuscarProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BuscarProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BuscarProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BuscarProductos().setVisible(true);
-            }
-        });
+    public static void main(String[] args) {
+        java.awt.EventQueue.invokeLater(() -> new BuscarProductos().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscarProducto;
     private javax.swing.JButton btnCerrarBP;
-    private javax.swing.JButton btnanadirCarrito;
     private javax.swing.JComboBox<String> cboxCategoriasBP;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -447,6 +337,5 @@ public class BuscarProductos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtBuscarProducto;
-    private javax.swing.JTextField txtCantidaBP;
     // End of variables declaration//GEN-END:variables
 }

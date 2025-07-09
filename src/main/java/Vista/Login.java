@@ -22,6 +22,45 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        // Centra la ventana
+        setLocationRelativeTo(null);
+
+// Placeholder para txtUsuario
+        txtUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                if (txtUsuario.getText().equals(" Ingrese el usuario")) {
+                    txtUsuario.setText("");
+                    txtUsuario.setForeground(java.awt.Color.BLACK);
+                }
+            }
+
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                if (txtUsuario.getText().trim().isEmpty()) {
+                    txtUsuario.setForeground(new java.awt.Color(204, 204, 204));
+                    txtUsuario.setText(" Ingrese el usuario");
+                }
+            }
+        });
+
+// Placeholder para txtContrasena
+        txtContrasena.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                String pass = new String(txtContrasena.getPassword());
+                if (pass.equals("Ingrese la contraseña")) {
+                    txtContrasena.setText("");
+                    txtContrasena.setForeground(java.awt.Color.BLACK);
+                }
+            }
+
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                String pass = new String(txtContrasena.getPassword());
+                if (pass.isEmpty()) {
+                    txtContrasena.setForeground(new java.awt.Color(204, 204, 204));
+                    txtContrasena.setText("Ingrese la contraseña");
+                }
+            }
+        });
+
     }
     
   private void validarLogin() {

@@ -4,6 +4,9 @@
  */
 package Vista;
 
+import Vista.productos.BuscarProductos;
+
+
 
 
 import Vista.productos.ProductoInterfaz;
@@ -839,8 +842,7 @@ public class MenuAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_botonaccederclientesActionPerformed
 
     private void btnAccederProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederProductosActionPerformed
-        ProductoInterfaz ventana = new ProductoInterfaz();
-        ventana.setVisible(true);       
+        new Vista.productos.BuscarProductos().setVisible(true);      
     }//GEN-LAST:event_btnAccederProductosActionPerformed
 
     private void btnAccederUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederUsuariosActionPerformed
@@ -857,8 +859,8 @@ public class MenuAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAccederBProductosActionPerformed
 
     private void btnAccederVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederVentasActionPerformed
-       GestionVenta ventana = new GestionVenta();
-       ventana.setVisible(true);       
+        BuscarProductos ventana = new BuscarProductos();
+        ventana.setVisible(true);       
     }//GEN-LAST:event_btnAccederVentasActionPerformed
 
     private void BtnAccederComprobantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAccederComprobantesActionPerformed
