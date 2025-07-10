@@ -9,6 +9,9 @@ import Modelo.DetalleVenta;
 import Modelo.Producto;
 import Modelo.Venta;
 import Conexion.CConexion;
+import Controlador.ClienteControlador;
+import Modelo.Cliente;
+import Vista.cliente.ClienteInterfazAgregar;
 
 
 import javax.swing.*;
@@ -24,6 +27,8 @@ public class GestionVenta extends javax.swing.JFrame {
 
     private DefaultTableModel modeloCarrito;
     private int item = 1; // Contador de ítems agregados
+    private ClienteControlador clienteControlador = new ClienteControlador();
+
 
     public GestionVenta() {
         initComponents();
@@ -479,7 +484,13 @@ public class GestionVenta extends javax.swing.JFrame {
         btnagregarclienteGV.setBackground(new java.awt.Color(153, 204, 255));
         btnagregarclienteGV.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnagregarclienteGV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/clienteeditar.png"))); // NOI18N
-        btnagregarclienteGV.setText("Datos del Cliente");
+        btnagregarclienteGV.setText("Agregar Cliente");
+        btnagregarclienteGV.setActionCommand("Agregar Cliente");
+        btnagregarclienteGV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnagregarclienteGVActionPerformed(evt);
+            }
+        });
 
         txtNombrecliente.setEditable(false);
 
@@ -711,11 +722,38 @@ public class GestionVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void txtbuscarClienteGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarClienteGVActionPerformed
-        // TODO add your handling code here:
+        String textoBusqueda = txtbuscarClienteGV.getText().trim();
+
+        if (textoBusqueda.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un DNI o nombre para buscar.");
+            return;
+        }
+
+        List<Cliente> clientesEncontrados = clienteControlador.obtenerClientesFiltrados(textoBusqueda);
+
+        if (clientesEncontrados.isEmpty()) {
+            int opcion = JOptionPane.showConfirmDialog(
+                    this,
+                    "Cliente no encontrado. ¿Deseas registrar uno nuevo?",
+                    "Cliente no existe",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (opcion == JOptionPane.YES_OPTION) {
+                // Abre ventana de registro
+                ClienteInterfazAgregar ventanaRegistro = new ClienteInterfazAgregar(null);
+                ventanaRegistro.setVisible(true);
+            }
+        } else {
+            // Mostrar el primer cliente encontrado
+            Cliente cliente = clientesEncontrados.get(0);
+            txtNombrecliente.setText(cliente.getNombre());
+            JOptionPane.showMessageDialog(this, "Cliente encontrado: " + cliente.getNombre());
+        }
     }//GEN-LAST:event_txtbuscarClienteGVActionPerformed
 
     private void btncerrarGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarGVActionPerformed
-        // TODO add your handling code here:
+        dispose(); // cierra esta ventana
     }//GEN-LAST:event_btncerrarGVActionPerformed
 
     private void txtsubtotalGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtsubtotalGVActionPerformed
@@ -806,6 +844,11 @@ public class GestionVenta extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnpagarActionPerformed
+
+    private void btnagregarclienteGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarclienteGVActionPerformed
+        ClienteInterfazAgregar ventanaRegistro = new ClienteInterfazAgregar(null);
+        ventanaRegistro.setVisible(true);
+    }//GEN-LAST:event_btnagregarclienteGVActionPerformed
 
     /**
      * @param args the command line arguments

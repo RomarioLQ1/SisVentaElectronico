@@ -4,6 +4,7 @@
  */
 package Vista;
 
+import Vista.Venta.GestionVenta;
 import Vista.productos.BuscarProductos;
 
 
@@ -859,7 +860,7 @@ public class MenuAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAccederBProductosActionPerformed
 
     private void btnAccederVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederVentasActionPerformed
-        BuscarProductos ventana = new BuscarProductos();
+        GestionVenta ventana = new GestionVenta();
         ventana.setVisible(true);       
     }//GEN-LAST:event_btnAccederVentasActionPerformed
 

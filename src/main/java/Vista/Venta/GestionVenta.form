@@ -628,8 +628,12 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/img/clienteeditar.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Datos del Cliente"/>
+            <Property name="text" type="java.lang.String" value="Agregar Cliente"/>
+            <Property name="actionCommand" type="java.lang.String" value="Agregar Cliente"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnagregarclienteGVActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNombrecliente">
           <Properties>
