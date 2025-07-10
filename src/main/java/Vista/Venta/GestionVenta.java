@@ -144,13 +144,11 @@ public class GestionVenta extends javax.swing.JFrame {
     
     // ========== MÉTODO PARA CALCULAR TOTALES ==========
       private void actualizarTotales() {
-        double subtotal = 0.0;
+        double subtotal = 0;
 
         DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
-
         for (int i = 0; i < modelo.getRowCount(); i++) {
-            double sub = Double.parseDouble(modelo.getValueAt(i, 3).toString());
-            subtotal += sub;
+            subtotal += Double.parseDouble(modelo.getValueAt(i, 3).toString());
         }
 
         double igv = subtotal * 0.18;
