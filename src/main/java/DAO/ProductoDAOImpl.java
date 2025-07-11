@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductoDAOImpl implements ProductoDAO {
+    
+    CConexion conector = new CConexion();
+
 
     private final Connection conn;
 
@@ -38,6 +41,24 @@ public class ProductoDAOImpl implements ProductoDAO {
 
         return categorias;
     }
+
+    @Override
+    public boolean actualizarStock(int idProducto, int nuevoStock) {
+        String sql = "UPDATE productos SET stock = ? WHERE id_producto = ?";
+        try (Connection con = conector.estableceConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, nuevoStock);
+            ps.setInt(2, idProducto);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar stock: " + e.getMessage());
+            return false;
+        }
+    }
+
+    
+    
 
     // ===================== BUSCAR PRODUCTOS POR FILTRO Y CATEGORÍA =====================
     @Override

@@ -12,6 +12,7 @@ public class Venta {
     private double subtotal;
     private double igv;
     private double total;
+    private String tipoComprobante; // ✅ NUEVO CAMPO
     private List<DetalleVenta> detalles;
 
     // Getters y setters
@@ -53,6 +54,14 @@ public class Venta {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public String getTipoComprobante() {
+        return tipoComprobante;
+    }
+
+    public void setTipoComprobante(String tipoComprobante) {
+        this.tipoComprobante = tipoComprobante;
     }
 
     public List<DetalleVenta> getDetalles() {
