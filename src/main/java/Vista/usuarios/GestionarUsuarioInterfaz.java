@@ -6,7 +6,9 @@ package Vista;
 
 import Controlador.UsuarioControlador;
 import Modelo.Usuario;
+import Vista.usuarios.GestionUsuariosEditar;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -17,7 +19,7 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
 
     private UsuarioControlador usuarioControlador = new UsuarioControlador();
     private String usuarioLogueado;
-    
+
     public GestionarUsuarioInterfaz(String usuarioLogueado) {
         initComponents();
         this.usuarioLogueado = usuarioLogueado;
@@ -236,6 +238,11 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
         btneditarUsario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btneditarUsario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/clienteeditar.png"))); // NOI18N
         btneditarUsario.setText("Edtiar Usuario");
+        btneditarUsario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btneditarUsarioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -297,6 +304,27 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
         menu.setVisible(true);
     }//GEN-LAST:event_btncerrarGUActionPerformed
 
+    private void btneditarUsarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarUsarioActionPerformed
+        int fila = jTableUsuarios.getSelectedRow();
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona un usuario para editar.");
+            return;
+        }
+
+        // Obtener datos del usuario seleccionado
+        int id = (int) jTableUsuarios.getValueAt(fila, 0);
+        String nombreUsuario = jTableUsuarios.getValueAt(fila, 1).toString();
+        String usuario = jTableUsuarios.getValueAt(fila, 2).toString();
+        String rol = jTableUsuarios.getValueAt(fila, 3).toString();
+
+        Usuario usuarioEditar = new Usuario(id, nombreUsuario, usuario, rol);
+
+        GestionUsuariosEditar ventanaEditar = new GestionUsuariosEditar(usuarioEditar, this);
+        ventanaEditar.setLocationRelativeTo(this);
+        ventanaEditar.setVisible(true);
+    }//GEN-LAST:event_btneditarUsarioActionPerformed
+
     public void cargarUsuarios() {
         List<Usuario> usuarios = usuarioControlador.obtenerUsuariosFiltrados();
 
@@ -309,15 +337,17 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
             }
         };
 
+        System.out.println(usuarioLogueado);
         for (Usuario u : usuarios) {
-            modelo.addRow(new Object[]{
-                u.getIdUsuario(),
-                u.getNombreUsuario(),
-                u.getUsuario(),
-                u.getRol()
-            });
+            if (!u.getNombreUsuario().equalsIgnoreCase(usuarioLogueado)) { // Filtrar tabla excepto el usuario logueado
+                modelo.addRow(new Object[]{
+                    u.getIdUsuario(),
+                    u.getNombreUsuario(),
+                    u.getUsuario(),
+                    u.getRol()
+                });
+            }
         }
-
         jTableUsuarios.setModel(modelo);
     }
 

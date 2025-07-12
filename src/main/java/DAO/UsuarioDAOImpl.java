@@ -87,13 +87,14 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public boolean actualizar(Usuario u) {
-        String sql = "UPDATE usuarios SET nombre_usuario=?, usuario=? WHERE id_usuario=?";
+        String sql = "UPDATE usuarios SET nombre_usuario=?, usuario=?, rol=? WHERE id_usuario=?";
         try (Connection con = conector.estableceConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, u.getNombreUsuario());
             ps.setString(2, u.getUsuario());
-            ps.setInt(3, u.getIdUsuario());
+            ps.setString(3, u.getRol());
+            ps.setInt(4, u.getIdUsuario());
 
             return ps.executeUpdate() > 0;
 

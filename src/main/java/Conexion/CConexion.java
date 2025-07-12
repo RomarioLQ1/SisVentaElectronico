@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 public class CConexion {
    // Parámetros de conexión
     private static final String usuario = "root";
-    private static final String contrasena = ""; // ← aquí pon tu contraseña real
+    private static final String contrasena = "";
     private static final String bd = "sistema_ventaselec";
     private static final String ip = "localhost";
     private static final String puerto = "3306";

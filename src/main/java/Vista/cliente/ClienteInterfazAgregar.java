@@ -20,14 +20,7 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
     }
-
-    private void limpiarFormulario() {
-        txtNombre.setText("");
-        txtDni.setText("");
-        txtDireccion.setText("");
-        txtTelefono.setText("");
-    }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -119,7 +112,12 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
         btncancelarNCliente.setBackground(new java.awt.Color(204, 255, 255));
         btncancelarNCliente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btncancelarNCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cancelar.png"))); // NOI18N
-        btncancelarNCliente.setText("Cancelar");
+        btncancelarNCliente.setText("Limpiar");
+        btncancelarNCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncancelarNClienteActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setText("Nuevo Cliente ");
@@ -244,7 +242,7 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -299,6 +297,13 @@ public class ClienteInterfazAgregar extends javax.swing.JFrame {
     private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTelefonoActionPerformed
+
+    private void btncancelarNClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarNClienteActionPerformed
+        txtNombre.setText("");
+        txtDni.setText("");
+        txtDireccion.setText("");
+        txtTelefono.setText("");
+    }//GEN-LAST:event_btncancelarNClienteActionPerformed
 
     /**
      * @param args the command line arguments

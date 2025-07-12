@@ -131,7 +131,12 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
         btncancelarNusuario.setBackground(new java.awt.Color(204, 255, 255));
         btncancelarNusuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btncancelarNusuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cancelar.png"))); // NOI18N
-        btncancelarNusuario.setText("Cancelar");
+        btncancelarNusuario.setText("Limpiar");
+        btncancelarNusuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncancelarNusuarioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -242,6 +247,12 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
         }
         this.dispose(); // cierra esta ventana
     }//GEN-LAST:event_btncerraragregarUActionPerformed
+
+    private void btncancelarNusuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarNusuarioActionPerformed
+        txtnuevoUsuario.setText("");
+        txtnombreNusuario.setText("");
+        cboxrolUsuario.setSelectedItem("");
+    }//GEN-LAST:event_btncancelarNusuarioActionPerformed
 
     /**
      * @param args the command line arguments

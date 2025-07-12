@@ -9,6 +9,7 @@ package Modelo;
  * @author david
  */
 public class Usuario {
+
     private int idUsuario;
     private String nombreUsuario;  // Nombre completo del usuario
     private String usuario;        // Nombre de usuario (login)
@@ -27,16 +28,23 @@ public class Usuario {
     // Constructor vacío
     public Usuario() {
     }
-    
+
     // Constructor para agregar Usuario
     public Usuario(String nombreUsuario, String usuario, String rol) {
         this.nombreUsuario = nombreUsuario;
         this.usuario = usuario;
         this.rol = rol;
     }
-    
-    
-        public int getIdUsuario() {
+
+    // Constructor para editar Usuario
+    public Usuario(int idUsuario, String nombreUsuario, String usuario, String rol) {
+        this.idUsuario = idUsuario;
+        this.nombreUsuario = nombreUsuario;
+        this.usuario = usuario;
+        this.rol = rol;
+    }
+ 
+    public int getIdUsuario() {
         return idUsuario;
     }
 

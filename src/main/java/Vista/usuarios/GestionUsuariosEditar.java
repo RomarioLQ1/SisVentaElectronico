@@ -4,17 +4,31 @@
  */
 package Vista.usuarios;
 
+import Controlador.UsuarioControlador;
+import Modelo.Usuario;
+import Vista.GestionarUsuarioInterfaz;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author david
  */
 public class GestionUsuariosEditar extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GestionUsuariosEditar
-     */
-    public GestionUsuariosEditar() {
+    private Usuario usuario;
+    private UsuarioControlador usuarioControlador = new UsuarioControlador();
+    private GestionarUsuarioInterfaz ventanaPrincipal;
+    
+    public GestionUsuariosEditar(Usuario usuario, GestionarUsuarioInterfaz ventanaPrincipal) {
+        this.usuario = usuario;
+        this.ventanaPrincipal = ventanaPrincipal;
         initComponents();
+        setLocationRelativeTo(null);
+        
+        // Llenar los campos del formulario
+        txteditarnombreUsuario.setText(usuario.getNombreUsuario());
+        txteditarusario.setText(usuario.getUsuario());
+        cboxeditarRolU.setSelectedItem(usuario.getRol());
     }
 
     /**
@@ -36,10 +50,8 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         txteditarnombreUsuario = new javax.swing.JTextField();
         txteditarusario = new javax.swing.JTextField();
-        txteditarcontra = new javax.swing.JTextField();
         cboxeditarRolU = new javax.swing.JComboBox<>();
         btnactualizaUsuarios = new javax.swing.JButton();
         btncancelarEU = new javax.swing.JButton();
@@ -106,20 +118,27 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Rol :");
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setText("Contraseña :");
-
-        cboxeditarRolU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Vendedor" }));
+        cboxeditarRolU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gerente", "Vendedor" }));
 
         btnactualizaUsuarios.setBackground(new java.awt.Color(204, 204, 204));
         btnactualizaUsuarios.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnactualizaUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/procesamiento-de-datos.png"))); // NOI18N
         btnactualizaUsuarios.setText("Actualizar");
+        btnactualizaUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnactualizaUsuariosActionPerformed(evt);
+            }
+        });
 
         btncancelarEU.setBackground(new java.awt.Color(204, 255, 255));
         btncancelarEU.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btncancelarEU.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cancelar.png"))); // NOI18N
-        btncancelarEU.setText("Cancelar");
+        btncancelarEU.setText("Limpiar");
+        btncancelarEU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncancelarEUActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -130,10 +149,6 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(40, 40, 40)
-                                .addComponent(txteditarcontra))
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
@@ -149,9 +164,9 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
                                     .addComponent(txteditarusario, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                                     .addComponent(txteditarnombreUsuario)))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(126, 126, 126)
+                        .addGap(110, 110, 110)
                         .addComponent(btnactualizaUsuarios)
-                        .addGap(102, 102, 102)
+                        .addGap(67, 67, 67)
                         .addComponent(btncancelarEU)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
@@ -174,15 +189,11 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(cboxeditarRolU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txteditarcontra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(65, 65, 65)
+                .addGap(71, 71, 71)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnactualizaUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btncancelarEU, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -208,8 +219,38 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncerrarEUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarEUActionPerformed
-        // TODO add your handling code here:
+        if (ventanaPrincipal != null) {
+            ventanaPrincipal.cargarUsuarios(); // actualiza tabla
+            ventanaPrincipal.setVisible(true);   // vuelve a mostrar la principal
+        }
+        this.dispose(); // cierra esta ventana
     }//GEN-LAST:event_btncerrarEUActionPerformed
+
+    private void btnactualizaUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactualizaUsuariosActionPerformed
+        String nombreUsuario = txteditarnombreUsuario.getText().trim();
+        String usuarioE = txteditarusario.getText().trim();
+        String rol = cboxeditarRolU.getSelectedItem().toString().trim();
+
+        usuario.setNombreUsuario(nombreUsuario);
+        usuario.setUsuario(usuarioE);
+        usuario.setRol(rol);
+        
+        boolean actualizado = usuarioControlador.actualizarUsuario(usuario);
+
+        if (actualizado) {
+            JOptionPane.showMessageDialog(this, "Usuario actualizado correctamente.");
+            ventanaPrincipal.cargarUsuarios(); // actualiza la tabla principal
+            this.dispose(); // cierra la ventana de edición
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al actualizar usuario. Verifica los datos.");
+        }
+    }//GEN-LAST:event_btnactualizaUsuariosActionPerformed
+
+    private void btncancelarEUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarEUActionPerformed
+        txteditarnombreUsuario.setText("");
+        txteditarusario.setText("");
+        cboxeditarRolU.setSelectedItem("");
+    }//GEN-LAST:event_btncancelarEUActionPerformed
 
     /**
      * @param args the command line arguments
@@ -241,7 +282,7 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GestionUsuariosEditar().setVisible(true);
+                new GestionUsuariosEditar(null, null).setVisible(true);
             }
         });
     }
@@ -258,10 +299,8 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField txteditarcontra;
     private javax.swing.JTextField txteditarnombreUsuario;
     private javax.swing.JTextField txteditarusario;
     // End of variables declaration//GEN-END:variables
