@@ -14,6 +14,7 @@ import Vista.productos.BuscarProductos;
 
 import Vista.productos.ProductoInterfaz;
 import Vista.cliente.ClienteInterfaz;
+import Vista.congfiguarigv.ConfiguarIGV;
 import Vista.controldeaccesos.ControlAccesos;
 import Vista.historialcomprobantes.HistorialComprobantes;
 import javax.swing.*;
@@ -25,10 +26,12 @@ import javax.swing.*;
 public class MenuAdmin extends javax.swing.JFrame {
 
     private String usuarioLogueado;
-
-    public MenuAdmin(String usuarioLogueado) {
+    private int idUsuarioLogueado;
+    
+    public MenuAdmin(String usuarioLogueado, int idUsuarioLogueado) {
         initComponents();
         this.usuarioLogueado = usuarioLogueado;
+        this.idUsuarioLogueado = idUsuarioLogueado;
     }
 
 
@@ -842,7 +845,7 @@ public class MenuAdmin extends javax.swing.JFrame {
 
     private void botonaccederclientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonaccederclientesActionPerformed
         this.setVisible(false);
-        ClienteInterfaz ventana = new ClienteInterfaz(usuarioLogueado);
+        ClienteInterfaz ventana = new ClienteInterfaz(usuarioLogueado, idUsuarioLogueado);
         ventana.setVisible(true);      
     }//GEN-LAST:event_botonaccederclientesActionPerformed
 
@@ -852,13 +855,15 @@ public class MenuAdmin extends javax.swing.JFrame {
 
     private void btnAccederUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederUsuariosActionPerformed
         this.setVisible(false);
-        GestionarUsuarioInterfaz ventana = new GestionarUsuarioInterfaz(usuarioLogueado);
+        GestionarUsuarioInterfaz ventana = new GestionarUsuarioInterfaz(usuarioLogueado, idUsuarioLogueado);
         ventana.setVisible(true);      
        
     }//GEN-LAST:event_btnAccederUsuariosActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        ConfiguarIGV ventana = new ConfiguarIGV(usuarioLogueado, idUsuarioLogueado);
+        ventana.setVisible(true); 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnAccederBProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederBProductosActionPerformed
@@ -916,7 +921,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuAdmin("admin").setVisible(true);
+                new MenuAdmin("admin", 0).setVisible(true);
             }
         });
     }

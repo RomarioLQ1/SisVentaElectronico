@@ -19,10 +19,12 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
 
     private UsuarioControlador usuarioControlador = new UsuarioControlador();
     private String usuarioLogueado;
+    private int idUsuarioLogueado;
 
-    public GestionarUsuarioInterfaz(String usuarioLogueado) {
+    public GestionarUsuarioInterfaz(String usuarioLogueado, int idUsuarioLogueado) {
         initComponents();
         this.usuarioLogueado = usuarioLogueado;
+        this.idUsuarioLogueado = idUsuarioLogueado;
         cargarUsuarios();
     }
 
@@ -300,7 +302,7 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
 
     private void btncerrarGUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarGUActionPerformed
         dispose();
-        MenuAdmin menu = new MenuAdmin(usuarioLogueado);
+        MenuAdmin menu = new MenuAdmin(usuarioLogueado, idUsuarioLogueado);
         menu.setVisible(true);
     }//GEN-LAST:event_btncerrarGUActionPerformed
 
@@ -378,7 +380,7 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GestionarUsuarioInterfaz(null).setVisible(true);
+                new GestionarUsuarioInterfaz(null, 0).setVisible(true);
             }
         });
     }

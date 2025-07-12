@@ -18,13 +18,15 @@ public class ClienteInterfaz extends javax.swing.JFrame {
 
     private ClienteControlador clienteController = new ClienteControlador();
     private String usuarioLogueado;
+    private int idUsuarioLogueado;
 
     /**
      * Creates new form ClienteInterfaz
      */
-    public ClienteInterfaz(String usuarioLogueado) {
+    public ClienteInterfaz(String usuarioLogueado, int idUsuarioLogueado) {
         initComponents();
         this.usuarioLogueado = usuarioLogueado;
+        this.idUsuarioLogueado = idUsuarioLogueado;
         cargarClientes("");
         txtBuscarCliente.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -401,7 +403,7 @@ public class ClienteInterfaz extends javax.swing.JFrame {
 
     private void btnsalirClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalirClienteActionPerformed
         dispose();
-        MenuAdmin menu = new MenuAdmin(usuarioLogueado);
+        MenuAdmin menu = new MenuAdmin(usuarioLogueado, idUsuarioLogueado);
         menu.setVisible(true);
     }//GEN-LAST:event_btnsalirClienteActionPerformed
 
@@ -435,7 +437,7 @@ public class ClienteInterfaz extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ClienteInterfaz(null).setVisible(true);
+                new ClienteInterfaz(null,0).setVisible(true);
             }
         });
     }
