@@ -4,6 +4,8 @@
  */
 package Vista;
 
+import Modelo.Usuario;
+import Vista.GestionarUsuarioInterfaz;
 import Vista.Venta.GestionVenta;
 import Vista.productos.BuscarProductos;
 
@@ -12,6 +14,8 @@ import Vista.productos.BuscarProductos;
 
 import Vista.productos.ProductoInterfaz;
 import Vista.cliente.ClienteInterfaz;
+import Vista.controldeaccesos.ControlAccesos;
+import Vista.historialcomprobantes.HistorialComprobantes;
 import javax.swing.*;
 
 /**
@@ -20,14 +24,13 @@ import javax.swing.*;
  */
 public class MenuAdmin extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MenuAdmin
-     */
-    public MenuAdmin() {
+    private String usuarioLogueado;
+
+    public MenuAdmin(String usuarioLogueado) {
         initComponents();
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Pantalla completa
-        setLocationRelativeTo(null); // Centrada
-}
+        this.usuarioLogueado = usuarioLogueado;
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -847,7 +850,10 @@ public class MenuAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAccederProductosActionPerformed
 
     private void btnAccederUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederUsuariosActionPerformed
-        // TODO add your handling code here:
+        GestionarUsuarioInterfaz ventana = new GestionarUsuarioInterfaz();
+        ventana.setVisible(true);
+        ventana.setLocationRelativeTo(null);
+    
     }//GEN-LAST:event_btnAccederUsuariosActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -860,16 +866,23 @@ public class MenuAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAccederBProductosActionPerformed
 
     private void btnAccederVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederVentasActionPerformed
-        GestionVenta ventana = new GestionVenta();
-        ventana.setVisible(true);       
+        GestionVenta ventana = new GestionVenta(usuarioLogueado);
+        ventana.setVisible(true);
+        ventana.setLocationRelativeTo(null); // Centrar la ventana
+    
     }//GEN-LAST:event_btnAccederVentasActionPerformed
 
     private void BtnAccederComprobantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAccederComprobantesActionPerformed
-        // TODO add your handling code here:
+        HistorialComprobantes ventana = new HistorialComprobantes();
+        ventana.setVisible(true);
+        ventana.setLocationRelativeTo(null);
+
     }//GEN-LAST:event_BtnAccederComprobantesActionPerformed
 
     private void btnAccederAccesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederAccesosActionPerformed
-        // TODO add your handling code here:
+        ControlAccesos ventana = new ControlAccesos();
+        ventana.setVisible(true);
+        ventana.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAccederAccesosActionPerformed
 
     /**
@@ -902,7 +915,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuAdmin().setVisible(true);
+                new MenuAdmin("admin").setVisible(true);
             }
         });
     }

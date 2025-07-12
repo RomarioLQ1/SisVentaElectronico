@@ -4,6 +4,25 @@
  */
 package Vista.historialcomprobantes;
 
+import Conexion.CConexion;
+import Controlador.VentaControlador;
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author david
@@ -15,7 +34,206 @@ public class HistorialComprobantes extends javax.swing.JFrame {
      */
     public HistorialComprobantes() {
         initComponents();
+
+        // Simular placeholder
+        txtbuscarhistorialC.setText("Buscar cliente o numero...");
+        txtbuscarhistorialC.setForeground(Color.GRAY);
+
+        txtbuscarhistorialC.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtbuscarhistorialC.getText().equals("Buscar cliente o numero...")) {
+                    txtbuscarhistorialC.setText("");
+                    txtbuscarhistorialC.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtbuscarhistorialC.getText().trim().isEmpty()) {
+                    txtbuscarhistorialC.setText("Buscar cliente o numero...");
+                    txtbuscarhistorialC.setForeground(Color.GRAY);
+                }
+            }
+        });
+
+        aplicarFiltros(); // Carga inicial
+
+         // Filtrar cuando cambia algo
+        txtbuscarhistorialC.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                aplicarFiltros();
+            }
+        });
+
+        jComboBox1.addActionListener(e -> aplicarFiltros());
+        cboxestadosHC.addActionListener(e -> aplicarFiltros());
+        dccalendarioHV.addPropertyChangeListener("date", evt -> aplicarFiltros());
+
     }
+    
+    
+    private void cargarComprobantes(String filtroTexto, String tipo, String estado, java.util.Date fecha) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new String[]{"Número", "Tipo", "Cliente", "Fecha", "Hora", "Total", "Estado"});
+
+        try (Connection con = CConexion.getConexion()) {
+            StringBuilder sql = new StringBuilder(
+                    "SELECT v.id_venta AS numero, v.tipo_comprobante AS tipo, "
+                    + "c.nombre_cliente AS cliente, v.fecha_venta AS fecha, "
+                    + "TIME(v.fecha_venta) AS hora, v.total, 'Emitido' AS estado "
+                    + "FROM ventas v "
+                    + "JOIN clientes c ON v.id_cliente = c.id_cliente "
+                    + "WHERE 1=1"
+            );
+
+            if (filtroTexto != null && !filtroTexto.trim().isEmpty() && !filtroTexto.equals("Buscar cliente o numero...")) {
+                sql.append(" AND (c.nombre_cliente LIKE ? OR v.id_venta LIKE ?)");
+            }
+
+            if (!"Todos los tipos".equalsIgnoreCase(tipo)) {
+                sql.append(" AND v.tipo_comprobante = ?");
+            }
+
+            if (!"Todos los estados".equalsIgnoreCase(estado)) {
+                // Solo si implementas campo estado en tabla ventas
+                if (estado.equalsIgnoreCase("Emitido")) {
+                    sql.append(" AND 1=1"); // no hace nada, lo dejas así
+                } else if (estado.equalsIgnoreCase("Anulado")) {
+                    sql.append(" AND 1=0"); // no muestra nada porque aún no tienes campo "estado"
+                }
+            }
+
+            if (fecha != null) {
+                sql.append(" AND DATE(v.fecha_venta) = ?");
+            }
+
+            PreparedStatement ps = con.prepareStatement(sql.toString());
+
+            int paramIndex = 1;
+            if (filtroTexto != null && !filtroTexto.trim().isEmpty() && !filtroTexto.equals("Buscar cliente o numero...")) {
+                ps.setString(paramIndex++, "%" + filtroTexto + "%");
+                ps.setString(paramIndex++, "%" + filtroTexto + "%");
+            }
+
+            if (!"Todos los tipos".equalsIgnoreCase(tipo)) {
+                ps.setString(paramIndex++, tipo.toLowerCase());
+            }
+
+            if (fecha != null) {
+                ps.setDate(paramIndex++, new java.sql.Date(fecha.getTime()));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getString("numero"),
+                    rs.getString("tipo"),
+                    rs.getString("cliente"),
+                    rs.getDate("fecha"),
+                    rs.getString("hora"),
+                    rs.getDouble("total"),
+                    rs.getString("estado")
+                };
+                modelo.addRow(fila);
+            }
+
+            jTable1.setModel(modelo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar comprobantes: " + e.getMessage());
+        }
+    }
+    
+    public void mostrarPDFEnVisor(int idVenta) {
+        VentaControlador vc = new VentaControlador();
+        byte[] datosPDF = vc.obtenerPDFVenta(idVenta);
+
+        if (datosPDF != null) {
+            try {
+                // Guardar temporalmente el PDF
+                File tempFile = File.createTempFile("comprobante_", ".pdf");
+                try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+                    fos.write(datosPDF);
+                }
+
+                // Abrir el PDF con el visor predeterminado
+                Desktop.getDesktop().open(tempFile);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "No se pudo abrir el comprobante.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró el comprobante.");
+        }
+    }
+
+
+    private void aplicarFiltros() {
+        String texto = txtbuscarhistorialC.getText().trim();
+        String tipo = (String) jComboBox1.getSelectedItem();
+        String estado = (String) cboxestadosHC.getSelectedItem();
+        java.util.Date fecha = dccalendarioHV.getDate();
+        cargarComprobantes(texto, tipo, estado, fecha);
+    }
+
+    private void descargarComprobantePDF() {
+        int fila = jTable1.getSelectedRow();
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un comprobante para descargar.");
+            return;
+        }
+
+        int idVenta = Integer.parseInt(jTable1.getValueAt(fila, 0).toString());
+
+        try {
+            CConexion conector = new CConexion();
+            Connection con = conector.estableceConexion();
+
+            String sql = "SELECT pdf FROM ventas WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idVenta);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                byte[] pdfBytes = rs.getBytes("pdf");
+
+                if (pdfBytes == null) {
+                    JOptionPane.showMessageDialog(this, "Esta venta no tiene un comprobante PDF guardado.");
+                    return;
+                }
+
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Guardar comprobante como");
+                fileChooser.setSelectedFile(new File("comprobante_" + idVenta + ".pdf"));
+
+                int userSelection = fileChooser.showSaveDialog(this);
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File archivoDestino = fileChooser.getSelectedFile();
+                    try (FileOutputStream fos = new FileOutputStream(archivoDestino)) {
+                        fos.write(pdfBytes);
+                    }
+
+                    JOptionPane.showMessageDialog(this, "PDF descargado con éxito en:\n" + archivoDestino.getAbsolutePath());
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró la venta en la base de datos.");
+            }
+
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al descargar el comprobante.");
+        }
+    }
+
+
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -226,10 +444,20 @@ public class HistorialComprobantes extends javax.swing.JFrame {
         btndescargarHC.setBackground(new java.awt.Color(204, 204, 204));
         btndescargarHC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/archivo.png"))); // NOI18N
         btndescargarHC.setText("Descargar");
+        btndescargarHC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btndescargarHCActionPerformed(evt);
+            }
+        });
 
         btnverpdfdeHC.setBackground(new java.awt.Color(255, 204, 204));
         btnverpdfdeHC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/archivo-pdf.png"))); // NOI18N
         btnverpdfdeHC.setText("Ver");
+        btnverpdfdeHC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnverpdfdeHCActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -282,6 +510,23 @@ public class HistorialComprobantes extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnverpdfdeHCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnverpdfdeHCActionPerformed
+        int fila = jTable1.getSelectedRow();
+        if (fila != -1) {
+            int idVenta = Integer.parseInt(jTable1.getValueAt(fila, 0).toString());
+            mostrarPDFEnVisor(idVenta);
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un comprobante primero.");
+        }
+    
+
+    }//GEN-LAST:event_btnverpdfdeHCActionPerformed
+
+    private void btndescargarHCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndescargarHCActionPerformed
+     descargarComprobantePDF();
+
+    }//GEN-LAST:event_btndescargarHCActionPerformed
 
     /**
      * @param args the command line arguments

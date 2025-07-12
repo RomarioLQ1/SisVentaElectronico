@@ -8,33 +8,31 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author david
- */
 public class CConexion {
-   Connection conectar = null; 
-   
-    String usuario ="root";
-    String contrasena =""; 
-    String bd="sistema_ventaselec";
-    String ip="localhost";
-    String puerto="3306";
-    
-    String cadena = "jdbc:mysql://"+ip+":"+puerto+"/"+bd;
-    
-    public Connection estableceConexion () {
-        try {
 
+    private static final String usuario = "root";
+    private static final String contrasena = "";
+    private static final String bd = "sistema_ventaselec";
+    private static final String ip = "localhost";
+    private static final String puerto = "3306";
+
+    private static final String cadena = "jdbc:mysql://"+ip+":"+puerto+"/"+bd;
+
+    public static Connection getConexion() {
+        Connection conectar = null;
+
+        try {
             Class.forName("com.mysql.jdbc.Driver");
-            
-            conectar=DriverManager.getConnection (cadena, usuario, contrasena);
-            //JOptionPane.showMessageDialog(null, "Se conectó correctamente a la base de datos ");//
+            conectar = DriverManager.getConnection(cadena, usuario, contrasena);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "No se conectó a la base de datos, error: "+e.toString());
+            JOptionPane.showMessageDialog(null, "Error de conexión: " + e.toString());
         }
-        
+
         return conectar;
     }
-     
+
+    
+    public Connection estableceConexion() {
+        return getConexion();
+    }
 }

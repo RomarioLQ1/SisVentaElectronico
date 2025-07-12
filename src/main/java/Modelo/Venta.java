@@ -4,18 +4,23 @@
  */
 package Modelo;
 
+import java.util.Date;
 import java.util.List;
 
 public class Venta {
     private int idVenta;
     private String nombreCliente;
+    private String dniCliente;
+    private Date fecha;
+    private String nombreUsuario;
     private double subtotal;
     private double igv;
     private double total;
-    private String tipoComprobante; // ✅ NUEVO CAMPO
+    private String tipoComprobante;
     private List<DetalleVenta> detalles;
 
-    // Getters y setters
+    // Getters y Setters
+
     public int getIdVenta() {
         return idVenta;
     }
@@ -30,6 +35,30 @@ public class Venta {
 
     public void setNombreCliente(String nombreCliente) {
         this.nombreCliente = nombreCliente;
+    }
+
+    public String getDniCliente() {
+        return dniCliente;
+    }
+
+    public void setDniCliente(String dniCliente) {
+        this.dniCliente = dniCliente;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
     public double getSubtotal() {

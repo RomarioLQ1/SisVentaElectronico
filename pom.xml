@@ -79,5 +79,12 @@
             <artifactId>jcalendar</artifactId>
             <version>1.4</version>
         </dependency>
+        
+        <!-- iText PDF (versión libre compatible) -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13.3</version>
+        </dependency>
     </dependencies>
 </project>
