@@ -14,6 +14,8 @@ import java.awt.event.FocusEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
@@ -192,7 +194,7 @@ public class HistorialComprobantes extends javax.swing.JFrame {
             CConexion conector = new CConexion();
             Connection con = conector.estableceConexion();
 
-            String sql = "SELECT pdf FROM ventas WHERE id = ?";
+            String sql = "SELECT pdf FROM ventas WHERE id_venta = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, idVenta);
             ResultSet rs = ps.executeQuery();
@@ -200,7 +202,7 @@ public class HistorialComprobantes extends javax.swing.JFrame {
             if (rs.next()) {
                 byte[] pdfBytes = rs.getBytes("pdf");
 
-                if (pdfBytes == null) {
+                if (pdfBytes == null || pdfBytes.length == 0) {
                     JOptionPane.showMessageDialog(this, "Esta venta no tiene un comprobante PDF guardado.");
                     return;
                 }
@@ -212,6 +214,16 @@ public class HistorialComprobantes extends javax.swing.JFrame {
                 int userSelection = fileChooser.showSaveDialog(this);
                 if (userSelection == JFileChooser.APPROVE_OPTION) {
                     File archivoDestino = fileChooser.getSelectedFile();
+
+                    // Verificar si ya existe
+                    if (archivoDestino.exists()) {
+                        int opcion = JOptionPane.showConfirmDialog(this, "El archivo ya existe. ¿Desea reemplazarlo?", "Confirmar", JOptionPane.YES_NO_OPTION);
+                        if (opcion != JOptionPane.YES_OPTION) {
+                            return;
+                        }
+                    }
+
+                    // Escritura segura
                     try (FileOutputStream fos = new FileOutputStream(archivoDestino)) {
                         fos.write(pdfBytes);
                     }
@@ -226,10 +238,13 @@ public class HistorialComprobantes extends javax.swing.JFrame {
             con.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al descargar el comprobante.");
+            // Muestra el error completo
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            JOptionPane.showMessageDialog(this, sw.toString(), "Error al descargar el comprobante", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
 
 
