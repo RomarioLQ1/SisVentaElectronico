@@ -4,17 +4,23 @@
  */
 package Vista;
 
+import Controlador.UsuarioControlador;
+import Modelo.Usuario;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author david
  */
 public class GestionUsuariosAgregar extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GestionUsuariosAgregar
-     */
-    public GestionUsuariosAgregar() {
+    private UsuarioControlador usuarioControlador = new UsuarioControlador();
+    private GestionarUsuarioInterfaz ventanaPrincipal;
+
+    public GestionUsuariosAgregar(GestionarUsuarioInterfaz ventanaPrincipal) {
+        this.ventanaPrincipal = ventanaPrincipal;
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -37,11 +43,9 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         txtnuevoUsuario = new javax.swing.JTextField();
         txtnombreNusuario = new javax.swing.JTextField();
         cboxrolUsuario = new javax.swing.JComboBox<>();
-        txtcontrasenaUsuario = new javax.swing.JTextField();
         btncrearUsuario = new javax.swing.JButton();
         btncancelarNusuario = new javax.swing.JButton();
 
@@ -59,6 +63,11 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
         btncerraragregarU.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btncerraragregarU.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/boton-salir-a-la-aplicacion.png"))); // NOI18N
         btncerraragregarU.setText("Cerrar");
+        btncerraragregarU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncerraragregarUActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -107,15 +116,17 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Rol :");
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel9.setText("Contraseña : ");
-
-        cboxrolUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Vendedor" }));
+        cboxrolUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gerente", "Vendedor" }));
 
         btncrearUsuario.setBackground(new java.awt.Color(204, 204, 204));
         btncrearUsuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btncrearUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/guardar-el-archivo.png"))); // NOI18N
         btncrearUsuario.setText("Crear");
+        btncrearUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncrearUsuarioActionPerformed(evt);
+            }
+        });
 
         btncancelarNusuario.setBackground(new java.awt.Color(204, 255, 255));
         btncancelarNusuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -131,7 +142,6 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
                             .addComponent(jLabel8)
                             .addComponent(jLabel5)
                             .addComponent(jLabel4))
@@ -140,22 +150,21 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
                                 .addComponent(txtnuevoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(34, 34, 34)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cboxrolUsuario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtnombreNusuario)
-                                    .addComponent(txtcontrasenaUsuario)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                                .addComponent(btncrearUsuario)
-                                .addGap(109, 109, 109)
-                                .addComponent(btncancelarNusuario)
-                                .addGap(90, 90, 90)))
+                                    .addComponent(txtnombreNusuario))))
                         .addGap(56, 56, 56))))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(152, 152, 152)
+                .addComponent(btncrearUsuario)
+                .addGap(101, 101, 101)
+                .addComponent(btncancelarNusuario)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,15 +186,11 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(cboxrolUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtcontrasenaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addGap(69, 69, 69)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btncrearUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btncancelarNusuario, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -209,6 +214,34 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btncrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncrearUsuarioActionPerformed
+        String usuario = txtnuevoUsuario.getText().trim();
+        String nombreUsuario = txtnombreNusuario.getText().trim();
+        String rol = cboxrolUsuario.getSelectedItem().toString().trim();
+
+        Usuario nuevoUsuario = new Usuario(nombreUsuario, usuario, rol);
+
+        boolean registrado = usuarioControlador.registrarUsuario(nuevoUsuario);
+
+        if (registrado) {
+            JOptionPane.showMessageDialog(this, "✅ Usuario registrado correctamente.");
+            txtnuevoUsuario.setText("");
+            txtnombreNusuario.setText("");
+            cboxrolUsuario.setSelectedItem("");
+        } else {
+            JOptionPane.showMessageDialog(this, "⚠ Usuario al registrar. Verifica los campos.");
+
+        }
+    }//GEN-LAST:event_btncrearUsuarioActionPerformed
+
+    private void btncerraragregarUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerraragregarUActionPerformed
+        if (ventanaPrincipal != null) {
+            ventanaPrincipal.cargarUsuarios(); // actualiza tabla
+            ventanaPrincipal.setVisible(true);   // vuelve a mostrar la principal
+        }
+        this.dispose(); // cierra esta ventana
+    }//GEN-LAST:event_btncerraragregarUActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,7 +273,7 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GestionUsuariosAgregar().setVisible(true);
+                new GestionUsuariosAgregar(null).setVisible(true);
             }
         });
     }
@@ -258,10 +291,8 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField txtcontrasenaUsuario;
     private javax.swing.JTextField txtnombreNusuario;
     private javax.swing.JTextField txtnuevoUsuario;
     // End of variables declaration//GEN-END:variables

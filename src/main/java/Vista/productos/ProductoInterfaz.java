@@ -64,6 +64,11 @@ public class ProductoInterfaz extends javax.swing.JFrame {
         btncerrarProducto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btncerrarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Cerrar.png"))); // NOI18N
         btncerrarProducto.setText("Salir");
+        btncerrarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncerrarProductoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -272,6 +277,10 @@ public class ProductoInterfaz extends javax.swing.JFrame {
     private void txtbuscarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarProductosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtbuscarProductosActionPerformed
+
+    private void btncerrarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btncerrarProductoActionPerformed
 
     /**
      * @param args the command line arguments

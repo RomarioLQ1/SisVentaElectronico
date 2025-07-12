@@ -4,17 +4,22 @@
  */
 package Vista;
 
+import Controlador.UsuarioControlador;
+import Modelo.Usuario;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author david
  */
 public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GestionarUsuarioInterfaz
-     */
+    private UsuarioControlador usuarioControlador = new UsuarioControlador ();
+    
     public GestionarUsuarioInterfaz() {
         initComponents();
+        cargarUsuarios();
     }
 
     /**
@@ -34,14 +39,14 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
         btncerrarGU = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablausuarios = new javax.swing.JTable();
+        jTableUsuarios = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
+        jToggleButton1 = new javax.swing.JToggleButton();
         btnnuevoUsuario = new javax.swing.JButton();
         btneditarUsario = new javax.swing.JButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,26 +63,25 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(71, 118, 248));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        btncerrarGU.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btncerrarGU.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Cerrar.png"))); // NOI18N
-        btncerrarGU.setText("Cerrar");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(84, Short.MAX_VALUE)
-                .addComponent(btncerrarGU)
-                .addGap(60, 60, 60))
+            .addGap(0, 269, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
-                .addComponent(btncerrarGU)
-                .addGap(18, 18, 18))
+            .addGap(0, 96, Short.MAX_VALUE)
         );
+
+        btncerrarGU.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btncerrarGU.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Cerrar.png"))); // NOI18N
+        btncerrarGU.setText("Cerrar");
+        btncerrarGU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncerrarGUActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -87,13 +91,16 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(75, 75, 75)
-                        .addComponent(jLabel2))
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(85, 85, 85)
                         .addComponent(jLabel1)
                         .addGap(153, 153, 153)
-                        .addComponent(jLabel3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btncerrarGU)
+                        .addGap(104, 104, 104)))
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
         );
@@ -106,18 +113,23 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel3))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(btncerrarGU)))))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Usuarios"));
 
-        tablausuarios.setModel(new javax.swing.table.DefaultTableModel(
+        jTableUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -128,9 +140,9 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
                 "Usuario", "Nombre", "Rol", "Estado", "Ultimo Acceso"
             }
         ));
-        jScrollPane1.setViewportView(tablausuarios);
-        if (tablausuarios.getColumnModel().getColumnCount() > 0) {
-            tablausuarios.getColumnModel().getColumn(4).setPreferredWidth(20);
+        jScrollPane1.setViewportView(jTableUsuarios);
+        if (jTableUsuarios.getColumnModel().getColumnCount() > 0) {
+            jTableUsuarios.getColumnModel().getColumn(4).setPreferredWidth(20);
         }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -180,19 +192,9 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        btnnuevoUsuario.setBackground(new java.awt.Color(153, 204, 255));
-        btnnuevoUsuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnnuevoUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/boton-agregar.png"))); // NOI18N
-        btnnuevoUsuario.setText("Nuevo Usuario");
-
-        btneditarUsario.setBackground(new java.awt.Color(0, 204, 204));
-        btneditarUsario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btneditarUsario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/clienteeditar.png"))); // NOI18N
-        btneditarUsario.setText("Edtiar Usuario");
-
         jToggleButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/boton-de-encendido.png"))); // NOI18N
-        jToggleButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jToggleButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jToggleButton1.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
         jToggleButton1.setDisabledSelectedIcon(null);
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -206,28 +208,32 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnnuevoUsuario)
-                            .addComponent(btneditarUsario, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
-                        .addComponent(jToggleButton1)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addGap(81, 81, 81)
+                .addComponent(jToggleButton1)
+                .addContainerGap(86, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(btnnuevoUsuario)
-                .addGap(78, 78, 78)
-                .addComponent(btneditarUsario)
-                .addGap(77, 77, 77)
+                .addGap(272, 272, 272)
                 .addComponent(jToggleButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(201, Short.MAX_VALUE))
         );
+
+        btnnuevoUsuario.setBackground(new java.awt.Color(153, 204, 255));
+        btnnuevoUsuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnnuevoUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/boton-agregar.png"))); // NOI18N
+        btnnuevoUsuario.setText("Nuevo Usuario");
+        btnnuevoUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnnuevoUsuarioActionPerformed(evt);
+            }
+        });
+
+        btneditarUsario.setBackground(new java.awt.Color(0, 204, 204));
+        btneditarUsario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btneditarUsario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/clienteeditar.png"))); // NOI18N
+        btneditarUsario.setText("Edtiar Usuario");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -238,7 +244,11 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(49, 49, 49)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(btnnuevoUsuario)
+                        .addGap(45, 45, 45)
+                        .addComponent(btneditarUsario, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(76, 76, 76)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -250,8 +260,15 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnnuevoUsuario)
+                            .addComponent(btneditarUsario))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -266,9 +283,42 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void btnnuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnuevoUsuarioActionPerformed
+        this.setVisible(false); // oculta la principal para simular cambio de pantalla
+        GestionUsuariosAgregar ventana = new GestionUsuariosAgregar(this);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnnuevoUsuarioActionPerformed
+
+    private void btncerrarGUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarGUActionPerformed
+        dispose();
+        MenuAdmin menu = new MenuAdmin();
+        menu.setVisible(true);
+    }//GEN-LAST:event_btncerrarGUActionPerformed
+
+    public void cargarUsuarios() {
+        List<Usuario> usuarios = usuarioControlador.obtenerUsuariosFiltrados();
+
+        DefaultTableModel modelo = new DefaultTableModel(
+                new Object[]{"ID", "Nombre", "Usuario", "Rol"}, 0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        for (Usuario u : usuarios) {
+            modelo.addRow(new Object[]{
+                u.getIdUsuario(),
+                u.getNombreUsuario(),
+                u.getUsuario(),
+                u.getRol()
+            });
+        }
+
+        jTableUsuarios.setModel(modelo);
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -316,7 +366,7 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableUsuarios;
     private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JTable tablausuarios;
     // End of variables declaration//GEN-END:variables
 }

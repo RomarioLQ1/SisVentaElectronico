@@ -26,6 +26,15 @@ public class Usuario {
     public Usuario() {
         
     }
+    
+    // Constructor para agregar Usuario
+    public Usuario(String nombreUsuario, String usuario, String rol) {
+        this.nombreUsuario = nombreUsuario;
+        this.usuario = usuario;
+        this.rol = rol;
+    }
+    
+    
         public int getIdUsuario() {
         return idUsuario;
     }

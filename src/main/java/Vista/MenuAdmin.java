@@ -838,6 +838,7 @@ public class MenuAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonaccederclientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonaccederclientesActionPerformed
+        this.setVisible(false);
         ClienteInterfaz ventana = new ClienteInterfaz();
         ventana.setVisible(true);      
     }//GEN-LAST:event_botonaccederclientesActionPerformed
@@ -847,7 +848,10 @@ public class MenuAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAccederProductosActionPerformed
 
     private void btnAccederUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederUsuariosActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        GestionarUsuarioInterfaz ventana = new GestionarUsuarioInterfaz();
+        ventana.setVisible(true);      
+       
     }//GEN-LAST:event_btnAccederUsuariosActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
