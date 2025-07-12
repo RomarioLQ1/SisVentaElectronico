@@ -15,10 +15,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
 
-    private UsuarioControlador usuarioControlador = new UsuarioControlador ();
+    private UsuarioControlador usuarioControlador = new UsuarioControlador();
+    private String usuarioLogueado;
     
-    public GestionarUsuarioInterfaz() {
+    public GestionarUsuarioInterfaz(String usuarioLogueado) {
         initComponents();
+        this.usuarioLogueado = usuarioLogueado;
         cargarUsuarios();
     }
 
@@ -291,7 +293,7 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
 
     private void btncerrarGUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarGUActionPerformed
         dispose();
-        MenuAdmin menu = new MenuAdmin();
+        MenuAdmin menu = new MenuAdmin(usuarioLogueado);
         menu.setVisible(true);
     }//GEN-LAST:event_btncerrarGUActionPerformed
 
@@ -318,7 +320,7 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
 
         jTableUsuarios.setModel(modelo);
     }
-    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -346,7 +348,7 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GestionarUsuarioInterfaz().setVisible(true);
+                new GestionarUsuarioInterfaz(null).setVisible(true);
             }
         });
     }

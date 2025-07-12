@@ -85,7 +85,7 @@ public class Login extends javax.swing.JFrame {
                 "Acceso permitido",
                 JOptionPane.INFORMATION_MESSAGE);
 
-        MenuAdmin menu = new MenuAdmin();
+        MenuAdmin menu = new MenuAdmin(user.getNombreUsuario());
         menu.setVisible(true);
         this.dispose();
     } else {

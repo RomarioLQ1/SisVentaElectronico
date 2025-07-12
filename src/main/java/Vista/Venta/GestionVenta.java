@@ -11,6 +11,7 @@ import Modelo.Venta;
 import Conexion.CConexion;
 import Controlador.ClienteControlador;
 import Modelo.Cliente;
+import Modelo.Usuario;
 import Vista.cliente.ClienteInterfazAgregar;
 
 
@@ -25,51 +26,75 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class GestionVenta extends javax.swing.JFrame {
+    
+    private String usuarioLogueado;
 
     private DefaultTableModel modeloCarrito;
     private int item = 1; // Contador de ítems agregados
     private ClienteControlador clienteControlador = new ClienteControlador();
     private String filtroActual = "";
     private String categoriaActual = "";
+    private javax.swing.JTextField txtDni; // Agrega esta línea
+    private javax.swing.JTextField txtCliente; // También es usada
+    private Cliente clienteSeleccionado;
+
+
+
     
 
 
 
-    public GestionVenta() {
+    public GestionVenta(String usuarioLogueado) {
         initComponents();
-        // Evento para seleccionar un producto y mostrar cantidad por defecto = 1
-        jTable1.getSelectionModel().addListSelectionListener(e -> {
+        this.usuarioLogueado = usuarioLogueado;
+
+        // Puedes también inicializar otros métodos como cargar productos, etc.
+        cargarProductosEnTabla();
+    
+    // Evento para seleccionar un producto y mostrar cantidad por defecto = 1
+
+    jTable1.getSelectionModel () 
+        .addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && jTable1.getSelectedRow() != -1) {
-                txtcantidadGV.setText("1"); // siempre al seleccionar, se pone 1
-            }
-        });
+            txtcantidadGV.setText("1"); // siempre al seleccionar, se pone 1
+        }
+    }
+);
 
         // 🔽 ENVOLVER TODO EL CONTENIDO CON SCROLL SI EXCEDE LA PANTALLA
         JScrollPane scrollPane = new JScrollPane(getContentPane());
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        // 🔽 Crear un nuevo JFrame temporal para ponerle el scrollPane como contenido
-        this.setContentPane(scrollPane);
+    scrollPane.setVerticalScrollBarPolicy (JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        // 🔽 Maximizar la ventana al iniciar (opcional pero recomendado)
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    // 🔽 Crear un nuevo JFrame temporal para ponerle el scrollPane como contenido
+     
 
-        // 🔽 Refrescar para asegurar que todo se renderice bien
-        revalidate();
-        repaint();
+    this.setContentPane(scrollPane);
 
-        // ✅ Inicializar categorías y productos
-        cargarCategorias();
-        cargarProductos(filtroActual, categoriaActual);
+    // 🔽 Maximizar la ventana al iniciar (opcional pero recomendado)
+     
 
-        // ✅ Guardar el modelo del carrito
-        modeloCarrito = (DefaultTableModel) jTable2.getModel();
+    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        // ✅ Activar filtros si los tienes
-        configurarEventos();
-    }
+    // 🔽 Refrescar para asegurar que todo se renderice bien
+    revalidate();
+
+    repaint();
+
+    // ✅ Inicializar categorías y productos
+    cargarCategorias();
+
+    cargarProductos(filtroActual, categoriaActual);
+
+    // ✅ Guardar el modelo del carrito
+    modeloCarrito  = (DefaultTableModel) jTable2.getModel();
+
+    // ✅ Activar filtros si los tienes
+    configurarEventos();
+}
 
     // ============================ CARGAR CATEGORÍAS ============================
     private void cargarCategorias() {
@@ -807,9 +832,10 @@ public class GestionVenta extends javax.swing.JFrame {
             }
         } else {
             // Mostrar el primer cliente encontrado
-            Cliente cliente = clientesEncontrados.get(0);
-            txtNombrecliente.setText(cliente.getNombre());
-            JOptionPane.showMessageDialog(this, "Cliente encontrado: " + cliente.getNombre());
+            clienteSeleccionado = clientesEncontrados.get(0); // ✅ Guardamos el cliente
+            txtNombrecliente.setText(clienteSeleccionado.getNombre());
+            JOptionPane.showMessageDialog(this, "Cliente encontrado: " + clienteSeleccionado.getNombre());
+
         }
     }//GEN-LAST:event_txtbuscarClienteGVActionPerformed
 
@@ -886,15 +912,21 @@ public class GestionVenta extends javax.swing.JFrame {
             return;
         }
 
-        // Crear modelo Venta
         Venta venta = new Venta();
         venta.setNombreCliente(cliente);
         venta.setSubtotal(Double.parseDouble(txtsubtotalGV.getText()));
         venta.setIgv(Double.parseDouble(txtigvGV.getText()));
         venta.setTotal(Double.parseDouble(txtcalculototalGV.getText()));
         venta.setTipoComprobante(comboTipoComprobante.getSelectedItem().toString());
+        if (clienteSeleccionado == null) {
+            JOptionPane.showMessageDialog(this, "Debe buscar un cliente válido.");
+            return;
+        }
+        venta.setDniCliente(clienteSeleccionado.getDni()); // ✅ Usamos el DNI real del cliente
 
-        // Extraer productos del carrito
+        venta.setFecha(new Date());
+        venta.setNombreUsuario(usuarioLogueado); // ✅ Esto sí funciona porque es un String
+
         List<DetalleVenta> detalles = new ArrayList<>();
         DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
         for (int i = 0; i < modelo.getRowCount(); i++) {
@@ -908,24 +940,21 @@ public class GestionVenta extends javax.swing.JFrame {
 
         venta.setDetalles(detalles);
 
-        // Registrar venta
         try {
-            CConexion conector = new CConexion(); // ✅ Usa tu clase CConexion
-            Connection con = conector.estableceConexion(); // ✅ Usa el método correcto
+            CConexion conector = new CConexion();
+            Connection con = conector.estableceConexion();
 
-            VentaControlador controlador = new VentaControlador(); // ✅ CONSTRUCTOR CORRECTO
-
+            VentaControlador controlador = new VentaControlador();
             boolean exito = controlador.registrarVenta(venta);
 
             if (exito) {
                 JOptionPane.showMessageDialog(this, "¡Venta registrada correctamente!");
-                modelo.setRowCount(0); // Limpiar carrito
+                modelo.setRowCount(0);
                 txtsubtotalGV.setText("");
                 txtigvGV.setText("");
                 txtcalculototalGV.setText("");
                 txtcantidadGV.setText("1");
-
-                cargarProductosEnTabla(); // 🔁 ACTUALIZA TABLA DE STOCK
+                cargarProductosEnTabla();
 
             } else {
                 JOptionPane.showMessageDialog(this, "No se pudo registrar la venta.");
@@ -949,37 +978,7 @@ public class GestionVenta extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GestionVenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GestionVenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GestionVenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GestionVenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GestionVenta().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnagregarclienteGV;
