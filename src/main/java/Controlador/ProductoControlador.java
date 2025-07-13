@@ -9,19 +9,30 @@ import Modelo.Producto;
 import java.util.List;
 
 public class ProductoControlador {
+
     private final ProductoDAO productoDAO;
 
     public ProductoControlador() {
         this.productoDAO = new ProductoDAOImpl();
     }
 
-    // Llama al método DAO para buscar productos
+    public String generarCodigoProducto() {
+        return productoDAO.obtenerUltimoCodigoProducto();
+    }
+
+    // Buscar productos por filtro y categoría
     public List<Producto> buscarProductos(String filtro, String categoria) {
         return productoDAO.buscarProductos(filtro, categoria);
     }
 
-    // Llama al método DAO para obtener categorías
+    // Obtener lista de categorías
     public List<String> obtenerCategorias() {
         return productoDAO.obtenerCategorias();
     }
+
+    // Registrar nuevo producto
+    public boolean registrarProducto(Producto producto) {
+        return productoDAO.registrarProducto(producto);
+    }
+
 }

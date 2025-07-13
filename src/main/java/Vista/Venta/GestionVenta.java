@@ -12,6 +12,7 @@ import Conexion.CConexion;
 import Controlador.ClienteControlador;
 import Modelo.Cliente;
 import Modelo.Usuario;
+import Vista.MenuAdmin;
 import Vista.cliente.ClienteInterfazAgregar;
 
 
@@ -40,6 +41,7 @@ public class GestionVenta extends javax.swing.JFrame {
     private javax.swing.JTextField txtDni; // Agrega esta línea
     private javax.swing.JTextField txtCliente; // También es usada
     private Cliente clienteSeleccionado;
+  
 
 
 
@@ -840,7 +842,7 @@ public class GestionVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_txtbuscarClienteGVActionPerformed
 
     private void btncerrarGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarGVActionPerformed
-        dispose(); // cierra esta ventana
+         dispose();
     }//GEN-LAST:event_btncerrarGVActionPerformed
 
     private void txtsubtotalGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtsubtotalGVActionPerformed

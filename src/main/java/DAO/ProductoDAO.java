@@ -9,4 +9,11 @@ public interface ProductoDAO {
     boolean actualizarStock(int idProducto, int nuevoStock);
     List<String> obtenerCategorias();
     List<Producto> buscarProductos(String texto, String categoria);
+    boolean registrarProducto(Producto producto);
+    
+    public String obtenerUltimoCodigoProducto();
+
+
+
+
 }

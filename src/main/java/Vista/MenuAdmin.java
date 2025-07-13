@@ -850,7 +850,7 @@ public class MenuAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_botonaccederclientesActionPerformed
 
     private void btnAccederProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederProductosActionPerformed
-        new Vista.productos.BuscarProductos().setVisible(true);      
+        new Vista.productos.ProductoInterfaz().setVisible(true);      
     }//GEN-LAST:event_btnAccederProductosActionPerformed
 
     private void btnAccederUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederUsuariosActionPerformed

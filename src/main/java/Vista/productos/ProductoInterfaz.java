@@ -4,18 +4,66 @@
  */
 package Vista.productos;
 
+import Controlador.ProductoControlador;
+import Modelo.Producto;
+import Vista.productos.ProductoInterfazAgregar;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
+
 /**
  *
  * @author david
  */
 public class ProductoInterfaz extends javax.swing.JFrame {
+    
+    private ProductoControlador productoControlador = new ProductoControlador();
+
 
     /**
      * Creates new form ProductoInterfaz
      */
     public ProductoInterfaz() {
         initComponents();
+        cargarProductos(""); // carga inicial sin filtro
+        
+
+        btnbuscarProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbuscarProductosActionPerformed(evt);
+            }
+        });
+
+
     }
+    
+    private void cargarProductos(String filtro) {
+        List<Producto> lista = productoControlador.buscarProductos(filtro, "");
+
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new String[]{"Código", "Nombre", "Categoría", "Precio", "Stock", "Estado"});
+
+        for (Producto p : lista) {
+            modelo.addRow(new Object[]{
+                p.getCodigo(), // ✅ Ahora se mostrará "P001", "P002", etc.
+                p.getNombreProducto(),
+                p.getNombreCategoria(),
+                p.getPrecio(),
+                p.getStock(),
+                p.getStock() > 0 ? "Disponible" : "Agotado"
+            });
+        }
+
+        jTable1.setModel(modelo);
+    }
+
+
+    private void btnbuscarProductosActionPerformed(java.awt.event.ActionEvent evt) {
+        String texto = txtbuscarProductos.getText().trim();
+        cargarProductos(texto);
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -121,7 +169,7 @@ public class ProductoInterfaz extends javax.swing.JFrame {
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Busqueda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Busqueda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
         jPanel2.setPreferredSize(new java.awt.Dimension(622, 84));
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -152,7 +200,7 @@ public class ProductoInterfaz extends javax.swing.JFrame {
                 .addComponent(txtbuscarProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53)
                 .addComponent(btnbuscarProductos)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,11 +214,16 @@ public class ProductoInterfaz extends javax.swing.JFrame {
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Acciones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Acciones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
 
         btnagregarProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnagregarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/boton-agregar.png"))); // NOI18N
         btnagregarProducto.setText("Agregar Producto");
+        btnagregarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnagregarProductoActionPerformed(evt);
+            }
+        });
 
         btneditarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editar-Producto.png"))); // NOI18N
         btneditarProducto.setText("Editar Producto");
@@ -240,7 +293,7 @@ public class ProductoInterfaz extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -264,7 +317,7 @@ public class ProductoInterfaz extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -275,12 +328,20 @@ public class ProductoInterfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtbuscarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarProductosActionPerformed
-        // TODO add your handling code here:
+      btnbuscarProductosActionPerformed(evt);
+    
     }//GEN-LAST:event_txtbuscarProductosActionPerformed
 
     private void btncerrarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarProductoActionPerformed
-        // TODO add your handling code here:
+          dispose(); 
     }//GEN-LAST:event_btncerrarProductoActionPerformed
+
+    private void btnagregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarProductoActionPerformed
+        ProductoInterfazAgregar agregar = new ProductoInterfazAgregar();
+        agregar.setLocationRelativeTo(null);
+        agregar.setVisible(true);
+
+    }//GEN-LAST:event_btnagregarProductoActionPerformed
 
     /**
      * @param args the command line arguments

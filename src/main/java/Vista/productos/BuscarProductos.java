@@ -4,6 +4,7 @@ package Vista.productos;
 
 import Controlador.ProductoControlador;
 import Modelo.Producto;
+import Vista.MenuAdmin;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -13,6 +14,8 @@ import java.util.List;
 public class BuscarProductos extends javax.swing.JFrame {
 
     private final ProductoControlador controlador;
+  
+ 
 
     public BuscarProductos() {
         initComponents(); // No tocar: generado por NetBeans
@@ -305,7 +308,7 @@ public class BuscarProductos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCerrarBPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarBPActionPerformed
-        dispose();
+        dispose();    
     }//GEN-LAST:event_btnCerrarBPActionPerformed
 
     private void txtBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarProductoActionPerformed
