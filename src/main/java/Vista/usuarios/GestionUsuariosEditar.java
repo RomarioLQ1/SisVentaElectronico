@@ -6,7 +6,7 @@ package Vista.usuarios;
 
 import Controlador.UsuarioControlador;
 import Modelo.Usuario;
-import Vista.GestionarUsuarioInterfaz;
+
 import javax.swing.JOptionPane;
 
 /**

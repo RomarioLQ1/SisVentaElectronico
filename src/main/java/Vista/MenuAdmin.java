@@ -5,7 +5,7 @@
 package Vista;
 
 import Modelo.Usuario;
-import Vista.GestionarUsuarioInterfaz;
+
 import Vista.Venta.GestionVenta;
 import Vista.productos.BuscarProductos;
 
@@ -17,6 +17,7 @@ import Vista.cliente.ClienteInterfaz;
 import Vista.congfiguarigv.ConfiguarIGV;
 import Vista.controldeaccesos.ControlAccesos;
 import Vista.historialcomprobantes.HistorialComprobantes;
+import Vista.usuarios.GestionarUsuarioInterfaz;
 import javax.swing.*;
 
 /**
