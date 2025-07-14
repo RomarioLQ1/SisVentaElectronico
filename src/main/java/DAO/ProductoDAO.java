@@ -1,5 +1,4 @@
 
-
 package DAO;
 
 import Modelo.Producto;
@@ -10,10 +9,9 @@ public interface ProductoDAO {
     List<String> obtenerCategorias();
     List<Producto> buscarProductos(String texto, String categoria);
     boolean registrarProducto(Producto producto);
-    
-    public String obtenerUltimoCodigoProducto();
+    String obtenerUltimoCodigoProducto();
 
-
-
-
+    boolean actualizarProductoPorCodigo(Producto producto);
+    Producto buscarPorCodigo(String codigo);
 }
+

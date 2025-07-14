@@ -34,5 +34,14 @@ public class ProductoControlador {
     public boolean registrarProducto(Producto producto) {
         return productoDAO.registrarProducto(producto);
     }
+    public Producto obtenerPorCodigo(String codigo) {
+    // Lógica para traer producto desde BD
+    return productoDAO.buscarPorCodigo(codigo);
+}
+    public boolean actualizarProductoPorCodigo(Producto producto) {
+    return productoDAO.actualizarProductoPorCodigo(producto);
+}
+
+
 
 }

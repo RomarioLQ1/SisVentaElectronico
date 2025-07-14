@@ -4,6 +4,10 @@
  */
 package Vista.productos;
 
+import Controlador.ProductoControlador;
+import Modelo.Producto;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author david
@@ -14,8 +18,25 @@ public class ProductoInterfazEditar extends javax.swing.JFrame {
      * Creates new form ProductoInterfazEditar
      */
     public ProductoInterfazEditar() {
-        initComponents();
+    initComponents();
+}
+
+public ProductoInterfazEditar(String codigoProducto) {
+    initComponents();
+    ProductoControlador controlador = new ProductoControlador();
+    Producto p = controlador.obtenerPorCodigo(codigoProducto);
+    if (p != null) {
+        txteditarcodigoP.setText(p.getCodigo());
+        txteditarnombreP.setText(p.getNombreProducto());
+        txtDescripcionP1.setText(p.getDescripcion());
+        txteditarprecioP.setText(String.valueOf(p.getPrecio()));
+        txteditarstockP.setText(String.valueOf(p.getStock()));
+        cboxeditarcategoriaP.setSelectedItem(p.getNombreCategoria());
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Producto no encontrado");
     }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,6 +66,8 @@ public class ProductoInterfazEditar extends javax.swing.JFrame {
         cboxeditarcategoriaP = new javax.swing.JComboBox<>();
         btnactualizarP = new javax.swing.JButton();
         btncancelareditarP = new javax.swing.JButton();
+        txtDescripcionP1 = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,6 +82,11 @@ public class ProductoInterfazEditar extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/boton-salir-a-la-aplicacion.png"))); // NOI18N
         jButton1.setText("Cerrar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -99,7 +127,7 @@ public class ProductoInterfazEditar extends javax.swing.JFrame {
         jLabel5.setText("Codigo :");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel6.setText("Nombre :");
+        jLabel6.setText("Descripcion :");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Categoria :");
@@ -122,11 +150,30 @@ public class ProductoInterfazEditar extends javax.swing.JFrame {
         btnactualizarP.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnactualizarP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/procesamiento-de-datos.png"))); // NOI18N
         btnactualizarP.setText("Actualizar");
+        btnactualizarP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnactualizarPActionPerformed(evt);
+            }
+        });
 
         btncancelareditarP.setBackground(new java.awt.Color(204, 255, 255));
         btncancelareditarP.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btncancelareditarP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cancelar.png"))); // NOI18N
         btncancelareditarP.setText("Cancelar");
+        btncancelareditarP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncancelareditarPActionPerformed(evt);
+            }
+        });
+
+        txtDescripcionP1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDescripcionP1ActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel10.setText("Nombre :");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -142,27 +189,25 @@ public class ProductoInterfazEditar extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(jLabel6)
                             .addComponent(jLabel8)
-                            .addComponent(jLabel7))
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel10))
                         .addGap(28, 28, 28)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txteditarnombreP)
-                            .addComponent(cboxeditarcategoriaP, 0, 310, Short.MAX_VALUE)
-                            .addComponent(txteditarcodigoP)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cboxeditarcategoriaP, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txteditarcodigoP)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(94, 94, 94)
-                                .addComponent(txteditarprecioP, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(56, 56, 56)
-                                .addComponent(btnactualizarP)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(txteditarprecioP, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txteditarstockP, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btncancelareditarP, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtDescripcionP1)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addComponent(btnactualizarP)
+                        .addGap(78, 78, 78)
+                        .addComponent(btncancelareditarP, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -178,19 +223,24 @@ public class ProductoInterfazEditar extends javax.swing.JFrame {
                     .addComponent(txteditarcodigoP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txteditarnombreP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txteditarnombreP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
                 .addGap(39, 39, 39)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel7)
                     .addComponent(cboxeditarcategoriaP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDescripcionP1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(32, 32, 32)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel9)
-                    .addComponent(txteditarprecioP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txteditarstockP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txteditarprecioP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9)
+                        .addComponent(txteditarstockP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnactualizarP)
                     .addComponent(btncancelareditarP, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -205,15 +255,15 @@ public class ProductoInterfazEditar extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -222,6 +272,65 @@ public class ProductoInterfazEditar extends javax.swing.JFrame {
     private void txteditarcodigoPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txteditarcodigoPActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txteditarcodigoPActionPerformed
+
+    private void txtDescripcionP1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionP1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDescripcionP1ActionPerformed
+
+    private void btnactualizarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactualizarPActionPerformed
+        // Obtener los datos del formulario
+        String codigo = txteditarcodigoP.getText();
+        String nombre = txteditarnombreP.getText();
+        String descripcion = txtDescripcionP1.getText();
+        String categoria = cboxeditarcategoriaP.getSelectedItem().toString();
+        double precio;
+        int stock;
+
+        try {
+            precio = Double.parseDouble(txteditarprecioP.getText());
+            stock = Integer.parseInt(txteditarstockP.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Precio o stock inválido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Crear el objeto producto con los datos actualizados
+        Producto producto = new Producto();
+        producto.setCodigo(codigo);
+        producto.setNombreProducto(nombre);
+        producto.setDescripcion(descripcion);
+        producto.setNombreCategoria(categoria);
+        producto.setPrecio(precio);
+        producto.setStock(stock);
+
+        // Llamar al controlador
+        ProductoControlador controlador = new ProductoControlador();
+        boolean actualizado = controlador.actualizarProductoPorCodigo(producto);
+
+        if (actualizado) {
+            JOptionPane.showMessageDialog(this, "✅ Producto actualizado correctamente.");
+            this.dispose(); // Cerrar la ventana después de actualizar
+        } else {
+            JOptionPane.showMessageDialog(this, "❌ Error al actualizar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnactualizarPActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btncancelareditarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelareditarPActionPerformed
+        int opcion = JOptionPane.showConfirmDialog(this,
+                "¿Seguro que deseas cancelar los cambios?",
+                "Confirmar cancelación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            this.dispose();
+        }
+
+    }//GEN-LAST:event_btncancelareditarPActionPerformed
 
     /**
      * @param args the command line arguments
@@ -264,6 +373,7 @@ public class ProductoInterfazEditar extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboxeditarcategoriaP;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -274,6 +384,7 @@ public class ProductoInterfazEditar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JTextField txtDescripcionP1;
     private javax.swing.JTextField txteditarcodigoP;
     private javax.swing.JTextField txteditarnombreP;
     private javax.swing.JTextField txteditarprecioP;

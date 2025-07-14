@@ -113,6 +113,49 @@ public class ProductoDAOImpl implements ProductoDAO {
         return "P001"; // Valor inicial si no hay productos
     }
 
+    @Override
+    public Producto buscarPorCodigo(String codigo) {
+        String sql = "SELECT p.id_producto, p.codigo, p.nombre_producto, p.descripcion, p.precio, p.stock, c.nombre_categoria "
+                + "FROM productos p INNER JOIN categorias c ON p.id_categoria = c.id_categoria WHERE p.codigo = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, codigo);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setCodigo(rs.getString("codigo"));
+                producto.setNombreProducto(rs.getString("nombre_producto"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setPrecio(rs.getDouble("precio"));
+                producto.setStock(rs.getInt("stock"));
+                producto.setNombreCategoria(rs.getString("nombre_categoria"));
+                return producto;
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ Error al buscar producto por código: " + e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public boolean actualizarProductoPorCodigo(Producto producto) {
+        String sql = "UPDATE productos SET nombre_producto = ?, descripcion = ?, id_categoria = (SELECT id_categoria FROM categorias WHERE nombre_categoria = ?), precio = ?, stock = ? WHERE codigo = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, producto.getNombreProducto());
+            ps.setString(2, producto.getDescripcion());
+            ps.setString(3, producto.getNombreCategoria());
+            ps.setDouble(4, producto.getPrecio());
+            ps.setInt(5, producto.getStock());
+            ps.setString(6, producto.getCodigo());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("❌ Error al actualizar producto por código: " + e.getMessage());
+            return false;
+        }
+    }
+
+
     // ===================== REGISTRAR NUEVO PRODUCTO =====================
     @Override
     public boolean registrarProducto(Producto producto) {

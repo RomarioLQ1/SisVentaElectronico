@@ -331,6 +331,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Editar Producto"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btneditarProductoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btneliminarProducto">
           <Properties>

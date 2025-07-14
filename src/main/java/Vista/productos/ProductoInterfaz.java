@@ -8,6 +8,7 @@ import Controlador.ProductoControlador;
 import Modelo.Producto;
 import Vista.productos.ProductoInterfazAgregar;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -227,6 +228,11 @@ public class ProductoInterfaz extends javax.swing.JFrame {
 
         btneditarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editar-Producto.png"))); // NOI18N
         btneditarProducto.setText("Editar Producto");
+        btneditarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btneditarProductoActionPerformed(evt);
+            }
+        });
 
         btneliminarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/boton-x.png"))); // NOI18N
         btneliminarProducto.setText("Eliminar");
@@ -342,6 +348,23 @@ public class ProductoInterfaz extends javax.swing.JFrame {
         agregar.setVisible(true);
 
     }//GEN-LAST:event_btnagregarProductoActionPerformed
+
+    private void btneditarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarProductoActionPerformed
+        int filaSeleccionada = jTable1.getSelectedRow();
+
+        if (filaSeleccionada != -1) {
+            // Suponiendo que la primera columna (0) contiene el código
+            String codigo = jTable1.getValueAt(filaSeleccionada, 0).toString();
+
+            // Abrimos la ventana de edición con el código del producto
+            ProductoInterfazEditar editar = new ProductoInterfazEditar(codigo);
+            editar.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un producto para editar.");
+        }
+
+
+    }//GEN-LAST:event_btneditarProductoActionPerformed
 
     /**
      * @param args the command line arguments
