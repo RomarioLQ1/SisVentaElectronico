@@ -240,7 +240,7 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
         btneditarUsario.setBackground(new java.awt.Color(0, 204, 204));
         btneditarUsario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btneditarUsario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/clienteeditar.png"))); // NOI18N
-        btneditarUsario.setText("Edtiar Usuario");
+        btneditarUsario.setText("Editar Usuario");
         btneditarUsario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btneditarUsarioActionPerformed(evt);
