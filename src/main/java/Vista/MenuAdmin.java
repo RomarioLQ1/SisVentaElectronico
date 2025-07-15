@@ -122,6 +122,11 @@ public class MenuAdmin extends javax.swing.JFrame {
         btnCerrarAdmin.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnCerrarAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Cerrar.png"))); // NOI18N
         btnCerrarAdmin.setText("Cerrar");
+        btnCerrarAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarAdminActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -894,6 +899,11 @@ public class MenuAdmin extends javax.swing.JFrame {
         ventana.setVisible(true);
         ventana.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAccederAccesosActionPerformed
+
+    private void btnCerrarAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarAdminActionPerformed
+        this.dispose();
+        new Login().setVisible(true); // o el login que estés usando
+    }//GEN-LAST:event_btnCerrarAdminActionPerformed
 
     /**
      * @param args the command line arguments

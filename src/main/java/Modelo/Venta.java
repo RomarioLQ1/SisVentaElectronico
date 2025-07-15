@@ -11,6 +11,7 @@ public class Venta {
     private int idVenta;
     private String nombreCliente;
     private String dniCliente;
+    private String direccionCliente; // ✅ NUEVO CAMPO AGREGADO
     private Date fecha;
     private String nombreUsuario;
     private double subtotal;
@@ -19,7 +20,7 @@ public class Venta {
     private String tipoComprobante;
     private List<DetalleVenta> detalles;
 
-    // Getters y Setters
+    // === Getters y Setters ===
 
     public int getIdVenta() {
         return idVenta;
@@ -43,6 +44,14 @@ public class Venta {
 
     public void setDniCliente(String dniCliente) {
         this.dniCliente = dniCliente;
+    }
+
+    public String getDireccionCliente() { // ✅ GETTER NUEVO
+        return direccionCliente;
+    }
+
+    public void setDireccionCliente(String direccionCliente) { // ✅ SETTER NUEVO
+        this.direccionCliente = direccionCliente;
     }
 
     public Date getFecha() {

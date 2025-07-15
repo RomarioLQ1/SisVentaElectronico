@@ -12,8 +12,13 @@ import Conexion.CConexion;
 import Controlador.ClienteControlador;
 import Modelo.Cliente;
 import Modelo.Usuario;
+import Util.GeneradorPDF;
 import Vista.MenuAdmin;
 import Vista.cliente.ClienteInterfazAgregar;
+import java.awt.Desktop;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 import javax.swing.*;
@@ -914,21 +919,22 @@ public class GestionVenta extends javax.swing.JFrame {
             return;
         }
 
-        Venta venta = new Venta();
-        venta.setNombreCliente(cliente);
-        venta.setSubtotal(Double.parseDouble(txtsubtotalGV.getText()));
-        venta.setIgv(Double.parseDouble(txtigvGV.getText()));
-        venta.setTotal(Double.parseDouble(txtcalculototalGV.getText()));
-        venta.setTipoComprobante(comboTipoComprobante.getSelectedItem().toString());
         if (clienteSeleccionado == null) {
             JOptionPane.showMessageDialog(this, "Debe buscar un cliente válido.");
             return;
         }
-        venta.setDniCliente(clienteSeleccionado.getDni()); // ✅ Usamos el DNI real del cliente
 
+        Venta venta = new Venta();
+        venta.setNombreCliente(clienteSeleccionado.getNombre());
+        venta.setDniCliente(clienteSeleccionado.getDni());
+        venta.setSubtotal(Double.parseDouble(txtsubtotalGV.getText()));
+        venta.setIgv(Double.parseDouble(txtigvGV.getText()));
+        venta.setTotal(Double.parseDouble(txtcalculototalGV.getText()));
+        venta.setTipoComprobante(comboTipoComprobante.getSelectedItem().toString().toUpperCase()); // "FACTURA" o "BOLETA"
         venta.setFecha(new Date());
-        venta.setNombreUsuario(usuarioLogueado); // ✅ Esto sí funciona porque es un String
+        venta.setNombreUsuario(usuarioLogueado); // Asumimos que esta variable contiene el nombre de usuario actual
 
+        // Recolectar detalles de la venta (desde la tabla del carrito)
         List<DetalleVenta> detalles = new ArrayList<>();
         DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
         for (int i = 0; i < modelo.getRowCount(); i++) {
@@ -943,14 +949,34 @@ public class GestionVenta extends javax.swing.JFrame {
         venta.setDetalles(detalles);
 
         try {
-            CConexion conector = new CConexion();
-            Connection con = conector.estableceConexion();
-
             VentaControlador controlador = new VentaControlador();
-            boolean exito = controlador.registrarVenta(venta);
+            int idVenta = controlador.registrarVenta(venta);
+            boolean exito = idVenta > 0;
 
             if (exito) {
                 JOptionPane.showMessageDialog(this, "¡Venta registrada correctamente!");
+
+                try {
+                    // Generar PDF como bytes y guardar localmente
+                    byte[] bytesPDF = GeneradorPDF.generarPDFComoBytes(venta, idVenta);
+
+                    String tipoComprobante = venta.getTipoComprobante(); // "BOLETA" o "FACTURA"
+                    String nombreArchivo = "comprobante_" + tipoComprobante.toLowerCase() + "_" + System.currentTimeMillis() + ".pdf";
+
+                    Path path = Paths.get(nombreArchivo);
+                    Files.write(path, bytesPDF);
+
+                    // Intentar abrir automáticamente el archivo
+                    if (Desktop.isDesktopSupported()) {
+                        Desktop.getDesktop().open(path.toFile());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Error al generar el comprobante PDF.");
+                }
+
+                // Limpiar campos
                 modelo.setRowCount(0);
                 txtsubtotalGV.setText("");
                 txtigvGV.setText("");
@@ -965,7 +991,7 @@ public class GestionVenta extends javax.swing.JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al registrar venta.");
         }
-
+    
     }//GEN-LAST:event_btnpagarActionPerformed
 
     private void btnagregarclienteGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarclienteGVActionPerformed

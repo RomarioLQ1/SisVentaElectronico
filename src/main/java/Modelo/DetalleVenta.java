@@ -7,6 +7,7 @@ package Modelo;
 public class DetalleVenta {
     private int idDetalle;
     private int idVenta;
+    private int idProducto; // ✅ Campo agregado
     private String producto;
     private int cantidad;
     private double precioUnitario;
@@ -27,6 +28,14 @@ public class DetalleVenta {
 
     public void setIdVenta(int idVenta) {
         this.idVenta = idVenta;
+    }
+
+    public int getIdProducto() { // ✅ Getter agregado
+        return idProducto;
+    }
+
+    public void setIdProducto(int idProducto) { // ✅ Setter agregado
+        this.idProducto = idProducto;
     }
 
     public String getProducto() {
