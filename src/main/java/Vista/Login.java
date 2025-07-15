@@ -63,47 +63,54 @@ public class Login extends javax.swing.JFrame {
 
     }
     
-  private void validarLogin() {
-    String usuarioIngresado = txtUsuario.getText().trim();
-    String contrasenaIngresada = new String(txtContrasena.getPassword()).trim();
+    private void validarLogin() {
+        String usuarioIngresado = txtUsuario.getText().trim();
+        String contrasenaIngresada = new String(txtContrasena.getPassword()).trim();
 
-    // Verificar campos vacíos
-    if (usuarioIngresado.isEmpty() || contrasenaIngresada.isEmpty()) {
-        JOptionPane.showMessageDialog(this,
-                "Por favor, complete todos los campos.",
-                "Campos vacíos",
-                JOptionPane.WARNING_MESSAGE);
-        return;
+        if (usuarioIngresado.isEmpty() || contrasenaIngresada.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Por favor, complete todos los campos.",
+                    "Campos vacíos",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        UsuarioDAO dao = new UsuarioDAOImpl();
+        Usuario user = dao.verificarUsuario(usuarioIngresado, contrasenaIngresada);
+
+        if (user != null) {
+            JOptionPane.showMessageDialog(this,
+                    "¡Bienvenido " + user.getNombreUsuario() + "! (" + user.getRol() + ")",
+                    "Acceso permitido",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            if (user.getRol().equalsIgnoreCase("vendedor")) {
+                MenuVendedor menuV = new MenuVendedor(user.getNombreUsuario(), user.getIdUsuario());
+                menuV.setVisible(true);
+            } else if (user.getRol().equalsIgnoreCase("admin") || user.getRol().equalsIgnoreCase("gerente")) {
+                MenuAdmin menuA = new MenuAdmin(user.getNombreUsuario(), user.getIdUsuario());
+                menuA.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Rol no reconocido: " + user.getRol(),
+                        "Acceso denegado",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Usuario o contraseña incorrectos.\nVerifique e intente nuevamente.",
+                    "Error de acceso",
+                    JOptionPane.ERROR_MESSAGE);
+
+            txtUsuario.setText("");
+            txtContrasena.setText("");
+            txtUsuario.requestFocus();
+        }
     }
-
-    UsuarioDAO dao = new UsuarioDAOImpl();
-    Usuario user = dao.verificarUsuario(usuarioIngresado, contrasenaIngresada);
-
-    if (user != null) {
-        JOptionPane.showMessageDialog(this,
-                "¡Bienvenido " + user.getNombreUsuario() + "!",
-                "Acceso permitido",
-                JOptionPane.INFORMATION_MESSAGE);
-
-        MenuAdmin menu = new MenuAdmin(user.getNombreUsuario(), user.getIdUsuario());
-        menu.setVisible(true);
-        this.dispose();
-    } else {
-        JOptionPane.showMessageDialog(this,
-                "Usuario o contraseña incorrectos.\nVerifique e intente nuevamente.",
-                "Error de acceso",
-                JOptionPane.ERROR_MESSAGE);
-
-        // Limpiar campos
-        txtUsuario.setText("");
-        txtContrasena.setText("");
-        txtUsuario.requestFocus();
-    }
-}
-
-
-    
-    
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -247,9 +254,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
-        // TODO add your handling code here:
-        validarLogin();
-        
+         validarLogin();
         
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 

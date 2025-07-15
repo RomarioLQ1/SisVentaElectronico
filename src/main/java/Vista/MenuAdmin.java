@@ -28,11 +28,15 @@ public class MenuAdmin extends javax.swing.JFrame {
 
     private String usuarioLogueado;
     private int idUsuarioLogueado;
-    
+
     public MenuAdmin(String usuarioLogueado, int idUsuarioLogueado) {
         initComponents();
         this.usuarioLogueado = usuarioLogueado;
         this.idUsuarioLogueado = idUsuarioLogueado;
+
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza
+        this.setLocationRelativeTo(null); // Centra
+        this.setVisible(true); // Muestra
     }
 
 

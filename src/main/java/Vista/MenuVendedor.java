@@ -4,17 +4,30 @@
  */
 package Vista;
 
+import Vista.Login;
+import Vista.Venta.GestionVenta;
+import Vista.cliente.ClienteInterfaz;
+import Vista.historialcomprobantes.HistorialComprobantes;
+import Vista.productos.BuscarProductos;
+import javax.swing.JFrame;
+
 /**
  *
  * @author david
  */
 public class MenuVendedor extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MenuVendedor
-     */
-    public MenuVendedor() {
+    private String nombreUsuario;
+    private int idUsuario;
+
+    public MenuVendedor(String nombreUsuario, int idUsuario) {
+        this.nombreUsuario = nombreUsuario;
+        this.idUsuario = idUsuario;
         initComponents();
+        jLabel3.setText("Vendedor: " + nombreUsuario);
+        
+       
+        this.setVisible(true); // Muestra
     }
 
     /**
@@ -104,6 +117,11 @@ public class MenuVendedor extends javax.swing.JFrame {
         btnCerrarVendedor.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnCerrarVendedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Cerrar.png"))); // NOI18N
         btnCerrarVendedor.setText("Cerrar");
+        btnCerrarVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarVendedorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -199,18 +217,22 @@ public class MenuVendedor extends javax.swing.JFrame {
         btnaccederBP.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnaccederBP.setForeground(new java.awt.Color(255, 255, 255));
         btnaccederBP.setText("Acceder");
+        btnaccederBP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnaccederBPActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnaccederBP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnaccederBP, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18))
             .addGroup(jPanel4Layout.createSequentialGroup()
@@ -422,6 +444,11 @@ public class MenuVendedor extends javax.swing.JFrame {
         btnaccederHC.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnaccederHC.setForeground(new java.awt.Color(255, 255, 255));
         btnaccederHC.setText("Acceder");
+        btnaccederHC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnaccederHCActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -498,12 +525,84 @@ public class MenuVendedor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnaccederGVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaccederGVActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+
+        GestionVenta ventana = new GestionVenta(nombreUsuario);
+        ventana.setLocationRelativeTo(null);
+        ventana.setVisible(true);
+        ventana.toFront();
+
+        ventana.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                MenuVendedor.this.setVisible(true);
+            }
+
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                MenuVendedor.this.setVisible(true);
+            }
+        });
     }//GEN-LAST:event_btnaccederGVActionPerformed
 
     private void btnaccederGCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaccederGCActionPerformed
-        // TODO add your handling code here:
+
+        ClienteInterfaz ventana = new ClienteInterfaz(nombreUsuario, idUsuario); 
+
+        ventana.setLocationRelativeTo(null);  // Centra
+        ventana.setAlwaysOnTop(true);         // Opcional: pone la nueva ventana encima
+        ventana.setVisible(true);             // Muestra
+        ventana.toFront();                    // Asegura que esté encima
+
+        this.setVisible(false);               // Oculta el menú vendedor, no lo cierra
     }//GEN-LAST:event_btnaccederGCActionPerformed
+
+    private void btnaccederBPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaccederBPActionPerformed
+        this.setVisible(false); // Oculta el menú
+
+        BuscarProductos ventana = new BuscarProductos();
+        ventana.setLocationRelativeTo(null);
+        ventana.setVisible(true);
+        ventana.toFront();
+
+        ventana.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                MenuVendedor.this.setVisible(true);
+            }
+
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                MenuVendedor.this.setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_btnaccederBPActionPerformed
+
+    private void btnaccederHCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaccederHCActionPerformed
+        this.setVisible(false);
+
+        HistorialComprobantes ventana = new HistorialComprobantes();
+        ventana.setLocationRelativeTo(null);
+        ventana.setVisible(true);
+        ventana.toFront();
+
+        ventana.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                MenuVendedor.this.setVisible(true);
+            }
+
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                MenuVendedor.this.setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_btnaccederHCActionPerformed
+
+    private void btnCerrarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarVendedorActionPerformed
+        this.dispose();
+        new Login().setVisible(true); // o el login que estés usando
+    }//GEN-LAST:event_btnCerrarVendedorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -535,7 +634,7 @@ public class MenuVendedor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuVendedor().setVisible(true);
+               new MenuVendedor("Vendedor Prueba", 1).setVisible(true);
             }
         });
     }

@@ -403,8 +403,7 @@ public class ClienteInterfaz extends javax.swing.JFrame {
 
     private void btnsalirClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalirClienteActionPerformed
         dispose();
-        MenuAdmin menu = new MenuAdmin(usuarioLogueado, idUsuarioLogueado);
-        menu.setVisible(true);
+        
     }//GEN-LAST:event_btnsalirClienteActionPerformed
 
     /**
