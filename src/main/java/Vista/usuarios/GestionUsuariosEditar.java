@@ -6,6 +6,7 @@ package Vista.usuarios;
 
 import Controlador.UsuarioControlador;
 import Modelo.Usuario;
+import Util.RegistroAccesoUtil;
 
 import javax.swing.JOptionPane;
 
@@ -18,18 +19,28 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
     private Usuario usuario;
     private UsuarioControlador usuarioControlador = new UsuarioControlador();
     private GestionarUsuarioInterfaz ventanaPrincipal;
-    
-    public GestionUsuariosEditar(Usuario usuario, GestionarUsuarioInterfaz ventanaPrincipal) {
+    private int idAdmin;
+    private String nombreAdmin;
+
+    // ✅ Constructor principal con parámetros
+    public GestionUsuariosEditar(Usuario usuario, GestionarUsuarioInterfaz ventanaPrincipal, int idAdmin, String nombreAdmin) {
         this.usuario = usuario;
         this.ventanaPrincipal = ventanaPrincipal;
+        this.idAdmin = idAdmin;
+        this.nombreAdmin = nombreAdmin;
         initComponents();
         setLocationRelativeTo(null);
-        
-        // Llenar campos con datos del usuario
+
         txteditarnombreUsuario.setText(usuario.getNombreUsuario());
         txteditarusario.setText(usuario.getUsuario());
         txteditarContra.setText(usuario.getContrasena());
         cboxeditarRolU.setSelectedItem(usuario.getRol());
+    }
+
+    // ✅ Constructor vacío agregado para evitar error de compilación
+    public GestionUsuariosEditar() {
+        initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -229,11 +240,11 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncerrarEUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarEUActionPerformed
-        if (ventanaPrincipal != null) {
-            ventanaPrincipal.cargarUsuarios(); // actualiza tabla
-            ventanaPrincipal.setVisible(true);   // vuelve a mostrar la principal
+       if (ventanaPrincipal != null) {
+            ventanaPrincipal.cargarUsuarios();
+            ventanaPrincipal.setVisible(true);
         }
-        this.dispose(); // cierra esta ventana
+        this.dispose();
     }//GEN-LAST:event_btncerrarEUActionPerformed
 
     private void btnactualizaUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactualizaUsuariosActionPerformed
@@ -250,6 +261,12 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
         boolean actualizado = usuarioControlador.actualizarUsuario(usuario);
 
         if (actualizado) {
+            RegistroAccesoUtil.registrarAcceso(
+                    idAdmin,
+                    nombreAdmin,
+                    "Gestión de Usuarios",
+                    "Editó al usuario: " + usuario.getUsuario()
+            );
             JOptionPane.showMessageDialog(this, "Usuario actualizado correctamente.");
             ventanaPrincipal.cargarUsuarios();
             this.dispose();
@@ -295,7 +312,8 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GestionUsuariosEditar(null, null).setVisible(true);
+                new GestionUsuariosEditar().setVisible(true);
+
             }
         });
     }

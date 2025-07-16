@@ -9,21 +9,20 @@ import java.sql.DriverManager;
 import javax.swing.JOptionPane;
 
 public class CConexion {
-   // Parámetros de conexión
     private static final String usuario = "root";
     private static final String contrasena = "";
     private static final String bd = "sistema_ventaselec";
     private static final String ip = "localhost";
     private static final String puerto = "3306";
 
-    // Cadena de conexión
-    private static final String cadena = "jdbc:mysql://" + ip + ":" + puerto + "/" + bd;
+    // Cadena de conexión mejorada con zona horaria
+    private static final String cadena = "jdbc:mysql://" + ip + ":" + puerto + "/" + bd 
+            + "?useSSL=false&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrieval=true";
 
-    // Método que establece y devuelve la conexión
     public static Connection getConexion() {
         Connection conectar = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver"); // ✅ Conector actualizado
             conectar = DriverManager.getConnection(cadena, usuario, contrasena);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error de conexión: " + e.toString());

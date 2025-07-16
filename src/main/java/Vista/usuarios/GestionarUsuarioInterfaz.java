@@ -323,7 +323,7 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
 
         Usuario usuarioEditar = new Usuario(id, nombreUsuario, usuario, rol);
 
-        GestionUsuariosEditar ventanaEditar = new GestionUsuariosEditar(usuarioEditar, this);
+        GestionUsuariosEditar ventanaEditar = new GestionUsuariosEditar(usuarioEditar, this, idUsuarioLogueado, usuarioLogueado);
         ventanaEditar.setLocationRelativeTo(this);
         ventanaEditar.setVisible(true);
     }//GEN-LAST:event_btneditarUsarioActionPerformed

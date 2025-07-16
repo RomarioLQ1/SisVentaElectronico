@@ -7,10 +7,9 @@ package Vista;
 import DAO.UsuarioDAO;
 import Modelo.Usuario;
 import javax.swing.JOptionPane;
-import Vista.MenuAdmin;
 import DAO.UsuarioDAOImpl;
 import Util.RegistroAccesoUtil;
-
+import java.net.InetAddress;
 
 /**
  *
@@ -18,15 +17,11 @@ import Util.RegistroAccesoUtil;
  */
 public class Login extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Login
-     */
     public Login() {
         initComponents();
-        // Centra la ventana
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); // Centrar ventana
 
-// Placeholder para txtUsuario
+        // Placeholder para txtUsuario
         txtUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 if (txtUsuario.getText().equals(" Ingrese el usuario")) {
@@ -43,7 +38,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-// Placeholder para txtContrasena
+        // Placeholder para txtContrasena
         txtContrasena.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 String pass = new String(txtContrasena.getPassword());
@@ -61,9 +56,8 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         });
-
     }
-    
+
     private void validarLogin() {
         String usuarioIngresado = txtUsuario.getText().trim();
         String contrasenaIngresada = new String(txtContrasena.getPassword()).trim();
@@ -85,14 +79,13 @@ public class Login extends javax.swing.JFrame {
                     "Acceso permitido",
                     JOptionPane.INFORMATION_MESSAGE);
 
+            // ✅ Registrar acceso sin pasar IP manualmente
             RegistroAccesoUtil.registrarAcceso(
                     user.getIdUsuario(),
                     user.getNombreUsuario(),
                     "Login",
-                    "Inicio de sesión exitoso",
-                    "127.0.0.1" // puedes cambiar a IP real si deseas obtenerla
+                    "Inicio de sesión exitoso"
             );
-
 
             if (user.getRol().equalsIgnoreCase("vendedor")) {
                 MenuVendedor menuV = new MenuVendedor(user.getNombreUsuario(), user.getIdUsuario());
@@ -120,7 +113,6 @@ public class Login extends javax.swing.JFrame {
             txtUsuario.requestFocus();
         }
     }
-   
 
     /**
      * This method is called from within the constructor to initialize the form.
