@@ -17,22 +17,19 @@ public class UsuarioControlador {
     private UsuarioDAOImpl usuarioDAO = new UsuarioDAOImpl();
 
     public List<Usuario> obtenerUsuariosFiltrados() {
-        List<Usuario> usuarios = usuarioDAO.obtenerTodos();
-
-        return usuarios;
+        return usuarioDAO.obtenerTodos();
     }
 
     public boolean registrarUsuario(Usuario usuario) {
         if (usuario.getNombreUsuario().isBlank()
                 || usuario.getUsuario().isBlank()
+                || usuario.getContrasena().isBlank()
                 || usuario.getRol().isBlank()) {
             return false;
         }
-        //metodo insertarcliente 
         return usuarioDAO.insertar(usuario);
     }
     
-    //metodo eliminar
     public boolean eliminarUsuarioPorId(int idUsuario) {
         return usuarioDAO.eliminar(idUsuario);
     }
@@ -41,6 +38,7 @@ public class UsuarioControlador {
         if (usuario.getIdUsuario() <= 0
                 || usuario.getNombreUsuario().isBlank()
                 || usuario.getUsuario().isBlank()
+                || usuario.getContrasena().isBlank()
                 || usuario.getRol().isBlank()) {
             return false;
         }

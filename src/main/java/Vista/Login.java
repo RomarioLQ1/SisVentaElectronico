@@ -9,6 +9,7 @@ import Modelo.Usuario;
 import javax.swing.JOptionPane;
 import Vista.MenuAdmin;
 import DAO.UsuarioDAOImpl;
+import Util.RegistroAccesoUtil;
 
 
 /**
@@ -83,6 +84,15 @@ public class Login extends javax.swing.JFrame {
                     "¡Bienvenido " + user.getNombreUsuario() + "! (" + user.getRol() + ")",
                     "Acceso permitido",
                     JOptionPane.INFORMATION_MESSAGE);
+
+            RegistroAccesoUtil.registrarAcceso(
+                    user.getIdUsuario(),
+                    user.getNombreUsuario(),
+                    "Login",
+                    "Inicio de sesión exitoso",
+                    "127.0.0.1" // puedes cambiar a IP real si deseas obtenerla
+            );
+
 
             if (user.getRol().equalsIgnoreCase("vendedor")) {
                 MenuVendedor menuV = new MenuVendedor(user.getNombreUsuario(), user.getIdUsuario());

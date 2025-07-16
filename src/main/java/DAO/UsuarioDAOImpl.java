@@ -43,6 +43,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         return user;
     }
 
+    @Override
     public boolean insertar(Usuario u) {
         String sql = "INSERT INTO usuarios (nombre_usuario, usuario, contrasena, rol) VALUES (?, ?, ?, ?)";
         try (Connection con = conector.estableceConexion();
@@ -50,7 +51,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
             ps.setString(1, u.getNombreUsuario());
             ps.setString(2, u.getUsuario());
-            ps.setString(3, "123456789");
+            ps.setString(3, u.getContrasena()); // ✅ usar la contraseña ingresada
             ps.setString(4, u.getRol());
 
             return ps.executeUpdate() > 0;
@@ -87,14 +88,15 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public boolean actualizar(Usuario u) {
-        String sql = "UPDATE usuarios SET nombre_usuario=?, usuario=?, rol=? WHERE id_usuario=?";
+        String sql = "UPDATE usuarios SET nombre_usuario=?, usuario=?, contrasena=?, rol=? WHERE id_usuario=?";
         try (Connection con = conector.estableceConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, u.getNombreUsuario());
             ps.setString(2, u.getUsuario());
-            ps.setString(3, u.getRol());
-            ps.setInt(4, u.getIdUsuario());
+            ps.setString(3, u.getContrasena()); // ✅ actualizar contraseña
+            ps.setString(4, u.getRol());
+            ps.setInt(5, u.getIdUsuario());
 
             return ps.executeUpdate() > 0;
 

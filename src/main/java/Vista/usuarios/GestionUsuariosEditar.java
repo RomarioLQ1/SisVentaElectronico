@@ -25,9 +25,10 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         
-        // Llenar los campos del formulario
+        // Llenar campos con datos del usuario
         txteditarnombreUsuario.setText(usuario.getNombreUsuario());
         txteditarusario.setText(usuario.getUsuario());
+        txteditarContra.setText(usuario.getContrasena());
         cboxeditarRolU.setSelectedItem(usuario.getRol());
     }
 
@@ -238,27 +239,30 @@ public class GestionUsuariosEditar extends javax.swing.JFrame {
     private void btnactualizaUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactualizaUsuariosActionPerformed
         String nombreUsuario = txteditarnombreUsuario.getText().trim();
         String usuarioE = txteditarusario.getText().trim();
+        String contrasena = txteditarContra.getText().trim();
         String rol = cboxeditarRolU.getSelectedItem().toString().trim();
 
         usuario.setNombreUsuario(nombreUsuario);
         usuario.setUsuario(usuarioE);
+        usuario.setContrasena(contrasena);
         usuario.setRol(rol);
-        
+
         boolean actualizado = usuarioControlador.actualizarUsuario(usuario);
 
         if (actualizado) {
             JOptionPane.showMessageDialog(this, "Usuario actualizado correctamente.");
-            ventanaPrincipal.cargarUsuarios(); // actualiza la tabla principal
-            this.dispose(); // cierra la ventana de edición
+            ventanaPrincipal.cargarUsuarios();
+            this.dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Error al actualizar usuario. Verifica los datos.");
+            JOptionPane.showMessageDialog(this, "Error al actualizar usuario. Verifica los datos.");
         }
     }//GEN-LAST:event_btnactualizaUsuariosActionPerformed
 
     private void btncancelarEUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarEUActionPerformed
         txteditarnombreUsuario.setText("");
         txteditarusario.setText("");
-        cboxeditarRolU.setSelectedItem("");
+        txteditarContra.setText("");
+        cboxeditarRolU.setSelectedIndex(0);
     }//GEN-LAST:event_btncancelarEUActionPerformed
 
     /**

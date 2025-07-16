@@ -21,6 +21,7 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
         this.ventanaPrincipal = ventanaPrincipal;
         initComponents();
         setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -228,23 +229,27 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncrearUsuarioActionPerformed
-        String usuario = txtnuevoUsuario.getText().trim();
-        String nombreUsuario = txtnombreNusuario.getText().trim();
-        String rol = cboxrolUsuario.getSelectedItem().toString().trim();
+        String nombre = txtnombreNusuario.getText();
+        String usuario = txtnuevoUsuario.getText();
+        String contrasena = txtcontraNusuario.getText();
+        String rol = cboxrolUsuario.getSelectedItem().toString();
 
-        Usuario nuevoUsuario = new Usuario(nombreUsuario, usuario, rol);
 
-        boolean registrado = usuarioControlador.registrarUsuario(nuevoUsuario);
+        Usuario nuevoUsuario = new Usuario();
+        nuevoUsuario.setNombreUsuario(nombre);
+        nuevoUsuario.setUsuario(usuario);
+        nuevoUsuario.setContrasena(contrasena);
+        nuevoUsuario.setRol(rol);
 
-        if (registrado) {
-            JOptionPane.showMessageDialog(this, "✅ Usuario registrado correctamente.");
-            txtnuevoUsuario.setText("");
-            txtnombreNusuario.setText("");
-            cboxrolUsuario.setSelectedItem("");
+        if (usuarioControlador.registrarUsuario(nuevoUsuario)) {
+            JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
+            ventanaPrincipal.cargarUsuarios(); // recarga tabla
+            this.dispose(); // cierra la ventana
         } else {
-            JOptionPane.showMessageDialog(this, "⚠ Usuario al registrar. Verifica los campos.");
-
+            JOptionPane.showMessageDialog(this, "Error al registrar usuario. Verifica los campos.");
         }
+    
+
     }//GEN-LAST:event_btncrearUsuarioActionPerformed
 
     private void btncerraragregarUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerraragregarUActionPerformed
@@ -256,9 +261,11 @@ public class GestionUsuariosAgregar extends javax.swing.JFrame {
     }//GEN-LAST:event_btncerraragregarUActionPerformed
 
     private void btncancelarNusuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarNusuarioActionPerformed
-        txtnuevoUsuario.setText("");
         txtnombreNusuario.setText("");
-        cboxrolUsuario.setSelectedItem("");
+        txtnuevoUsuario.setText("");
+        txtcontraNusuario.setText("");
+        cboxrolUsuario.setSelectedIndex(0);
+
     }//GEN-LAST:event_btncancelarNusuarioActionPerformed
 
     /**

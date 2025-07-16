@@ -4,18 +4,70 @@
  */
 package Vista.controldeaccesos;
 
+import Controlador.RegistroAccesoControlador;
+import Modelo.RegistroAcceso;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Date;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author david
  */
+
 public class ControlAccesos extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ControlAccesos
-     */
+    private final RegistroAccesoControlador controlador = new RegistroAccesoControlador();
+    private final DefaultTableModel modeloTabla = new DefaultTableModel();
+
     public ControlAccesos() {
         initComponents();
+        configurarTabla();
+        cargarRegistros(controlador.obtenerTodos()); // sin filtros
     }
+
+    private void configurarTabla() {
+        modeloTabla.setColumnIdentifiers(new Object[]{"Usuario", "Nombre", "Fecha", "Hora", "Modulo", "Acción", "IP"});
+        jTable1.setModel(modeloTabla);
+    }
+
+    private void cargarRegistros(List<RegistroAcceso> registros) {
+        modeloTabla.setRowCount(0); // Limpiar tabla
+
+        for (RegistroAcceso ra : registros) {
+            modeloTabla.addRow(new Object[]{
+                ra.getIdUsuario(),
+                ra.getNombreUsuario(),
+                ra.getFecha(),
+                ra.getHora(),
+                ra.getModulo(),
+                ra.getAccion(),
+                ra.getIp()
+            });
+        }
+    }
+
+    private void aplicarFiltros() {
+        String texto = txtbuscarusuarioCA.getText().trim();
+        String usuario = cboxusuarioControlA.getSelectedItem().toString();
+        String modulo = cboxmodulosCA.getSelectedItem().toString();
+        Date fecha = dccontrolacceso.getDate(); // puede ser null
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaStr = (fecha != null) ? sdf.format(fecha) : "";
+
+        List<RegistroAcceso> filtrados = controlador.buscarRegistros(
+            texto != null ? texto : "",
+            usuario != null ? usuario : "Todos los usuarios",
+            modulo != null ? modulo : "Todos los modulos",
+            fechaStr
+        );
+
+        cargarRegistros(filtrados);
+    
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -58,6 +110,11 @@ public class ControlAccesos extends javax.swing.JFrame {
         btncerrarControlAcceso.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btncerrarControlAcceso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Cerrar.png"))); // NOI18N
         btncerrarControlAcceso.setText("Cerrar");
+        btncerrarControlAcceso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncerrarControlAccesoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -105,13 +162,10 @@ public class ControlAccesos extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -131,10 +185,25 @@ public class ControlAccesos extends javax.swing.JFrame {
         jLabel6.setText("Buscar :");
 
         txtbuscarusuarioCA.setText("Buscar usuario,modulo o accion...");
+        txtbuscarusuarioCA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtbuscarusuarioCAActionPerformed(evt);
+            }
+        });
 
         cboxusuarioControlA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos los usuarios", "Administrador", "Vendedor" }));
+        cboxusuarioControlA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboxusuarioControlAActionPerformed(evt);
+            }
+        });
 
         cboxmodulosCA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos los modulos", "Gestion de ventas", "Gestion de prodcutos", "Gestion de clientes", "Gestion de usuarios", "Configuracion de IGV", "Historial de comprobantes", "Control de acceso", "Buscar productos" }));
+        cboxmodulosCA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboxmodulosCAActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -221,6 +290,22 @@ public class ControlAccesos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtbuscarusuarioCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarusuarioCAActionPerformed
+        aplicarFiltros();
+    }//GEN-LAST:event_txtbuscarusuarioCAActionPerformed
+
+    private void cboxusuarioControlAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxusuarioControlAActionPerformed
+       aplicarFiltros();
+    }//GEN-LAST:event_cboxusuarioControlAActionPerformed
+
+    private void cboxmodulosCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxmodulosCAActionPerformed
+        aplicarFiltros();
+    }//GEN-LAST:event_cboxmodulosCAActionPerformed
+
+    private void btncerrarControlAccesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarControlAccesoActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btncerrarControlAccesoActionPerformed
 
     /**
      * @param args the command line arguments
