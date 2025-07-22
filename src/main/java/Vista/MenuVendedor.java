@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package Vista;
 
 import Vista.Login;
@@ -10,7 +7,7 @@ import Vista.cliente.ClienteInterfaz;
 import Vista.historialcomprobantes.HistorialComprobantes;
 import Vista.productos.BuscarProductos;
 import javax.swing.JFrame;
-
+import Util.BotonUtil;
 /**
  *
  * @author david
@@ -28,7 +25,15 @@ public class MenuVendedor extends javax.swing.JFrame {
         
        
         this.setVisible(true); // Muestra
+        
+        this.setLocationRelativeTo(null);
+        
+        BotonUtil.aplicarEfectoHover(btnaccederGV);
+        BotonUtil.aplicarEfectoHover(btnaccederGC);
+        BotonUtil.aplicarEfectoHover(btnaccederBP);
+        BotonUtil.aplicarEfectoHover(btnaccederHC);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -217,6 +222,7 @@ public class MenuVendedor extends javax.swing.JFrame {
         btnaccederBP.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnaccederBP.setForeground(new java.awt.Color(255, 255, 255));
         btnaccederBP.setText("Acceder");
+        btnaccederBP.setBorder(null);
         btnaccederBP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnaccederBPActionPerformed(evt);
@@ -294,6 +300,7 @@ public class MenuVendedor extends javax.swing.JFrame {
         btnaccederGV.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnaccederGV.setForeground(new java.awt.Color(255, 255, 255));
         btnaccederGV.setText("Acceder");
+        btnaccederGV.setBorder(null);
         btnaccederGV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnaccederGVActionPerformed(evt);
@@ -369,6 +376,7 @@ public class MenuVendedor extends javax.swing.JFrame {
         btnaccederGC.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnaccederGC.setForeground(new java.awt.Color(255, 255, 255));
         btnaccederGC.setText("Acceder");
+        btnaccederGC.setBorder(null);
         btnaccederGC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnaccederGCActionPerformed(evt);
@@ -444,6 +452,7 @@ public class MenuVendedor extends javax.swing.JFrame {
         btnaccederHC.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnaccederHC.setForeground(new java.awt.Color(255, 255, 255));
         btnaccederHC.setText("Acceder");
+        btnaccederHC.setBorder(null);
         btnaccederHC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnaccederHCActionPerformed(evt);
@@ -607,37 +616,7 @@ public class MenuVendedor extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MenuVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MenuVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MenuVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MenuVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-               new MenuVendedor("Vendedor Prueba", 1).setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrarVendedor;

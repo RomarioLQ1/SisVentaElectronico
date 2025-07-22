@@ -25,6 +25,8 @@ public class ClienteInterfaz extends javax.swing.JFrame {
      */
     public ClienteInterfaz(String usuarioLogueado, int idUsuarioLogueado) {
         initComponents();
+        
+        this.setLocationRelativeTo(null); // Centra
         this.usuarioLogueado = usuarioLogueado;
         this.idUsuarioLogueado = idUsuarioLogueado;
         cargarClientes("");
@@ -117,17 +119,6 @@ public class ClienteInterfaz extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(51, 102, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 270, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 86, Short.MAX_VALUE)
-        );
-
         btnsalirCliente.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnsalirCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Cerrar.png"))); // NOI18N
         btnsalirCliente.setText("Salir");
@@ -136,6 +127,23 @@ public class ClienteInterfaz extends javax.swing.JFrame {
                 btnsalirClienteActionPerformed(evt);
             }
         });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(94, Short.MAX_VALUE)
+                .addComponent(btnsalirCliente)
+                .addGap(64, 64, 64))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(btnsalirCliente)
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -149,8 +157,6 @@ public class ClienteInterfaz extends javax.swing.JFrame {
                 .addGap(80, 80, 80)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnsalirCliente)
-                .addGap(84, 84, 84)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(47, 47, 47))
         );
@@ -163,9 +169,7 @@ public class ClienteInterfaz extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3)
-                                .addComponent(btnsalirCliente)))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
                         .addGap(1, 1, 1)))
@@ -178,7 +182,7 @@ public class ClienteInterfaz extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel1.setText(" Buscar :");
 
-        txtBuscarCliente.setText("Buscar por Nombre,DNI ,telefono o correo ...");
+        txtBuscarCliente.setText("Buscar por Nombre,DNI ,telefono .....");
         txtBuscarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtBuscarClienteActionPerformed(evt);
@@ -402,6 +406,7 @@ public class ClienteInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_btneliminarClienteActionPerformed
 
     private void btnsalirClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalirClienteActionPerformed
+        new MenuAdmin(usuarioLogueado, idUsuarioLogueado).setVisible(true);
         dispose();
         
     }//GEN-LAST:event_btnsalirClienteActionPerformed

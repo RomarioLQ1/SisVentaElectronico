@@ -15,8 +15,11 @@ public class ProductoInterfazAgregar extends javax.swing.JFrame {
 
     public ProductoInterfazAgregar() {
         initComponents();
+        this.setLocationRelativeTo(null); 
         cargarCategorias();
         generarCodigoProducto(); // ← Generar código automático al iniciar
+        
+        
     }
 
     private void cargarCategorias() {

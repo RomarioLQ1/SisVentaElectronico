@@ -27,6 +27,8 @@ public class ConfiguarIGV extends javax.swing.JFrame {
 
     public ConfiguarIGV(String usuarioLogueado, int idUsuarioLogueado) {
         initComponents();
+        
+        this.setLocationRelativeTo(null); 
         txtTotal.setEditable(true);
         this.usuarioLogueado = usuarioLogueado;
         this.idUsuarioLogueado = idUsuarioLogueado;

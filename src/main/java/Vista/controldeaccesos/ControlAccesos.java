@@ -23,6 +23,7 @@ public class ControlAccesos extends javax.swing.JFrame {
 
     public ControlAccesos() {
         initComponents();
+        this.setLocationRelativeTo(null); 
         configurarTabla();
         cargarRegistros(controlador.obtenerTodos()); // sin filtros
     }

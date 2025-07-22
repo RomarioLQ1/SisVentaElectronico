@@ -21,6 +21,9 @@ public class BuscarProductos extends javax.swing.JFrame {
         initComponents(); // No tocar: generado por NetBeans
         controlador = new ProductoControlador();
 
+        this.setLocationRelativeTo(null);
+        
+        
         cargarCategorias(); // Llenar combo
         cargarTablaProductos("", ""); // Mostrar todos los productos
 

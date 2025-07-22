@@ -9,12 +9,12 @@ package Conexion;
  * @author david
  */
 public class MainDB {
-    //public static void main(String[] args){
+    public static void main(String[] args){
         
-       // CConexion objetoConexion = new CConexion();
-       // objetoConexion.estableceConexion();
+       CConexion objetoConexion = new CConexion();
+       objetoConexion.estableceConexion();
         
-    //
+    }
   
 }
     

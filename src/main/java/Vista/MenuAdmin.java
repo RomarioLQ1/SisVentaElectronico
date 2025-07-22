@@ -19,7 +19,7 @@ import Vista.controldeaccesos.ControlAccesos;
 import Vista.historialcomprobantes.HistorialComprobantes;
 import Vista.usuarios.GestionarUsuarioInterfaz;
 import javax.swing.*;
-
+import Util.BotonUtil;
 /**
  *
  * @author david
@@ -29,15 +29,35 @@ public class MenuAdmin extends javax.swing.JFrame {
     private String usuarioLogueado;
     private int idUsuarioLogueado;
 
+    
     public MenuAdmin(String usuarioLogueado, int idUsuarioLogueado) {
         initComponents();
+
+        
         this.usuarioLogueado = usuarioLogueado;
         this.idUsuarioLogueado = idUsuarioLogueado;
 
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza
-        this.setLocationRelativeTo(null); // Centra
-        this.setVisible(true); // Muestra
+        // Configurar ventana
+        //this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximizar
+        this.setLocationRelativeTo(null);             // Centrar
+        this.setVisible(true);                        // Mostrar
+
+        // los  botonsitos
+        // Aplicar efecto hover a los botones
+        BotonUtil.aplicarEfectoHover(botonaccederclientes);
+        BotonUtil.aplicarEfectoHover(btnAccederProductos);
+        BotonUtil.aplicarEfectoHover(btnAccederUsuarios);
+        BotonUtil.aplicarEfectoHover(jButton2); // Configurar IGV
+        BotonUtil.aplicarEfectoHover(btnAccederBProductos);
+        BotonUtil.aplicarEfectoHover(btnAccederVentas);
+        BotonUtil.aplicarEfectoHover(BtnAccederComprobantes);
+        BotonUtil.aplicarEfectoHover(btnAccederAccesos);
+        BotonUtil.aplicarEfectoHover(btnCerrarAdmin);
+
+
     }
+    
+
 
 
     /**
@@ -709,6 +729,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         btnAccederUsuarios.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAccederUsuarios.setForeground(new java.awt.Color(255, 255, 255));
         btnAccederUsuarios.setText("Acceder");
+        btnAccederUsuarios.setBorder(null);
         btnAccederUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAccederUsuariosActionPerformed(evt);
@@ -859,7 +880,7 @@ public class MenuAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_botonaccederclientesActionPerformed
 
     private void btnAccederProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederProductosActionPerformed
-        new Vista.productos.ProductoInterfaz().setVisible(true);      
+        new Vista.productos.ProductoInterfaz().setVisible(true);          
     }//GEN-LAST:event_btnAccederProductosActionPerformed
 
     private void btnAccederUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederUsuariosActionPerformed

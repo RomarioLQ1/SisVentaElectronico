@@ -24,6 +24,7 @@ public class GestionarUsuarioInterfaz extends javax.swing.JFrame {
 
     public GestionarUsuarioInterfaz(String usuarioLogueado, int idUsuarioLogueado) {
         initComponents();
+        this.setLocationRelativeTo(null); 
         this.usuarioLogueado = usuarioLogueado;
         this.idUsuarioLogueado = idUsuarioLogueado;
         cargarUsuarios();

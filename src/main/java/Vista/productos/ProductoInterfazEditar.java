@@ -19,10 +19,12 @@ public class ProductoInterfazEditar extends javax.swing.JFrame {
      */
     public ProductoInterfazEditar() {
     initComponents();
+    this.setLocationRelativeTo(null); 
 }
 
 public ProductoInterfazEditar(String codigoProducto) {
     initComponents();
+    this.setLocationRelativeTo(null); 
     ProductoControlador controlador = new ProductoControlador();
     Producto p = controlador.obtenerPorCodigo(codigoProducto);
     if (p != null) {

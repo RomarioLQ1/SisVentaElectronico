@@ -20,15 +20,17 @@ public class ProductoInterfaz extends javax.swing.JFrame {
     
     private ProductoControlador productoControlador = new ProductoControlador();
 
-
+   
     /**
      * Creates new form ProductoInterfaz
      */
     public ProductoInterfaz() {
-        initComponents();
-        cargarProductos(""); // carga inicial sin filtro
         
+        initComponents();
+        cargarProductos(""); 
+        this.setLocationRelativeTo(null); // Centra
 
+        
         btnbuscarProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnbuscarProductosActionPerformed(evt);
